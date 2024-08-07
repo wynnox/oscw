@@ -1,0 +1,12 @@
+# ninja log v5
+4	339	1722995262544770313	CMakeFiles/course_project.dir/allocator/allocator/allocator_guardant.cpp.o	87a041903cea9cd9
+12	2855	1722995265062784995	CMakeFiles/course_project.dir/logger/logger/logger.cpp.o	d39761da57311ad0
+22	1689	1722995286070907518	CMakeFiles/course_project.dir/main.cpp.o	4b6d4511e4c302c3
+6	2355	1722995264561782074	CMakeFiles/course_project.dir/allocator/allocator_global_heap/allocator_global_heap.cpp.o	41951107c37497f1
+7	1406	1722995294348955807	CMakeFiles/course_project.dir/logger/logger/logger_guardant.cpp.o	c8856d3037a1d2a4
+9	398	1722996685395119825	build.ninja	660787256c5e22a
+7	10614	1722995272818830225	CMakeFiles/course_project.dir/logger/client_logger/client_logger.cpp.o	2b525230ec6a4c71
+9	16104	1722995278298862186	CMakeFiles/course_project.dir/logger/client_logger/client_logger_builder.cpp.o	6408189c3f7a25c3
+20	1659	1722995286040907343	CMakeFiles/course_project.dir/logger/logger/logger_builder.cpp.o	40ae0b5f9798c079
+5	1181	1722995263388775234	CMakeFiles/course_project.dir/allocator/allocator/allocator_test_utils.cpp.o	8c72b0029d388698
+1406	1936	1722995294872958863	course_project	55e63f0b331b8b5b
