@@ -333,6 +333,7 @@ void b_tree<tkey, tvalue>::insert_inner(
 {
     auto path = this->find_path(kvp.key);
     auto *node = *path.top().first;
+    size_t t = _t;
     if (node == nullptr && path.size() == 1)
     {
         typename search_tree<tkey ,tvalue>::common_node *new_node;
@@ -627,9 +628,10 @@ b_tree<tkey, tvalue>::b_tree(
     std::function<int(tkey const &, tkey const &)> keys_comparer,
     allocator *allocator,
     logger *logger):
-        search_tree<tkey, tvalue>(keys_comparer, logger, allocator)
+        search_tree<tkey, tvalue>(keys_comparer, logger, allocator),
+    _t(t)
 {
-    if ((_t = t) < 2)
+    if (_t < 2)
     {
         throw std::logic_error("Invalid value of t parameter");
     }

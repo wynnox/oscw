@@ -1,0 +1,82 @@
+#ifndef CONTAINER_H
+#define CONTAINER_H
+
+#include "b_tree.h"
+#include <iostream>
+#include "compasion.h"
+
+template <typename Key, typename Value>
+class container
+{
+private:
+    b_tree<Key, Value>* _container;
+    size_t _t;
+
+protected:
+    explicit container(size_t t) : _t(t), _container(new b_tree<Key, Value>(t, comparison::stdstring_comparer())) {}
+
+    ~container()
+    {
+        delete _container;
+    }
+
+    container(const container& other) : _t(other._t), _container(new b_tree<Key, Value>(*other._container))
+    {
+        std::cout << "Copy constructor called with t: " << other._t << std::endl;
+        std::cout << "_t initialized to: " << _t << std::endl;
+    }
+
+    container& operator=(const container& other)
+    {
+        if (this == &other) return *this;
+
+        delete _container;
+
+        _t = other._t;
+        _container = new b_tree<Key, Value>(*other._container);
+        return *this;
+    }
+
+    container(container&& other) noexcept : _container(other._container), _t(other._t)
+    {
+        other._container = nullptr;
+    }
+
+    container& operator=(container&& other) noexcept
+    {
+        if (this == &other) return *this;
+
+        delete _container;
+
+        _container = other._container;
+        _t = other._t;
+        other._container = nullptr;
+        return *this;
+    }
+
+    void add_item(const Key& key, const Value& value)
+    {
+        _container->insert(key, value);
+    }
+
+    const Value& get_item(const Key& key) const
+    {
+        return _container->obtain(key);
+    }
+
+    void remove_item(const Key& key)
+    {
+        _container->dispose(key);
+    }
+
+    friend std::ostream& operator<<(std::ostream& os, const container& container)
+    {
+        for (auto it = container._container->begin_infix(); it != container._container->end_infix(); ++it) {
+            auto [depth, index, key, value] = *it;
+            os << key << ": " << value << "\n";
+        }
+        return os;
+    }
+};
+
+#endif //CONTAINER_H

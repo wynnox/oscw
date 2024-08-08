@@ -52,63 +52,63 @@ build cmake_object_order_depends_target_course_project: phony || CMakeFiles/cour
 build CMakeFiles/course_project.dir/allocator/allocator/allocator_guardant.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/allocator/allocator/allocator_guardant.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/allocator/allocator/allocator_guardant.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/allocator/allocator
 
 build CMakeFiles/course_project.dir/allocator/allocator/allocator_test_utils.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/allocator/allocator/allocator_test_utils.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/allocator/allocator/allocator_test_utils.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/allocator/allocator
 
 build CMakeFiles/course_project.dir/allocator/allocator_global_heap/allocator_global_heap.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/allocator/allocator_global_heap/allocator_global_heap.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/allocator/allocator_global_heap/allocator_global_heap.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/allocator/allocator_global_heap
 
 build CMakeFiles/course_project.dir/logger/client_logger/client_logger.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/logger/client_logger/client_logger.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/logger/client_logger/client_logger.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/logger/client_logger
 
 build CMakeFiles/course_project.dir/logger/client_logger/client_logger_builder.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/logger/client_logger/client_logger_builder.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/logger/client_logger/client_logger_builder.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/logger/client_logger
 
 build CMakeFiles/course_project.dir/logger/logger/logger.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/logger/logger/logger.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/logger/logger/logger.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/logger/logger
 
 build CMakeFiles/course_project.dir/logger/logger/logger_builder.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/logger/logger/logger_builder.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/logger/logger/logger_builder.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/logger/logger
 
 build CMakeFiles/course_project.dir/logger/logger/logger_guardant.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/logger/logger/logger_guardant.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/logger/logger/logger_guardant.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir/logger/logger
 
 build CMakeFiles/course_project.dir/main.cpp.o: CXX_COMPILER__course_project_unscanned_Debug /home/nncl/oscw/main.cpp || cmake_object_order_depends_target_course_project
   DEP_FILE = CMakeFiles/course_project.dir/main.cpp.o.d
   FLAGS = -g -fdiagnostics-color=always
-  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/data_collections -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
+  INCLUDES = -I/home/nncl/oscw/allocator/allocator -I/home/nncl/oscw/allocator/allocator_global_heap -I/home/nncl/oscw/be_tree -I/home/nncl/oscw/database -I/home/nncl/oscw/logger/client_logger -I/home/nncl/oscw/logger/logger -I/home/nncl/oscw/cmake-build-debug/_deps/json-src/include
   OBJECT_DIR = CMakeFiles/course_project.dir
   OBJECT_FILE_DIR = CMakeFiles/course_project.dir
 

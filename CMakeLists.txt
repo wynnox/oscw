@@ -16,7 +16,7 @@ FetchContent_MakeAvailable(json)
 include_directories(allocator/allocator)
 include_directories(allocator/allocator_global_heap)
 include_directories(be_tree)
-include_directories(data_collections)
+include_directories(database)
 include_directories(logger/client_logger)
 include_directories(logger/logger)
 
@@ -27,7 +27,7 @@ file(GLOB_RECURSE SOURCES
         allocator/allocator_global_heap/*.cpp
         allocator/allocator_global_heap/*.h
         be_tree/*.h
-        data_collections/*.h
+        database/*.h
         logger/client_logger/*.cpp
         logger/client_logger/*.h
         logger/logger/*.cpp
@@ -36,6 +36,9 @@ file(GLOB_RECURSE SOURCES
 
 add_executable(course_project ${SOURCES}
         allocator/allocator_global_heap/typename_holder.h
-        data_collections/data.h)
+        database/data.h
+        database/database.h
+        database/compasion.h
+        database/file_system_database.h)
 
 target_link_libraries(course_project PRIVATE nlohmann_json::nlohmann_json)

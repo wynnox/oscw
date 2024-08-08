@@ -1,36 +1,49 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include "scheme.h"
+
+#include "b_tree_database.h"
 #include "pool.h"
 #include "collectoin.h"
 #include "data.h"
+#include "database.h"
 
-int main() {
-    pool data_pool(3);
 
-    scheme student_scheme(3);
-    collection group_a(3);
-    collection group_b(3);
+int main()
+{
+    std::string command1 = "-in_memory_cache";
+    std::string command2 = "-file_system";
 
-    group_a.add_data("001", data("John", "Doe"));
-    group_a.add_data("002", data("Jane", "Smith"));
-    group_b.add_data("003", data("Emily", "Jones"));
-    group_b.add_data("004", data("Michael", "Brown"));
 
-    student_scheme.add_collection("Group A", group_a);
-    student_scheme.add_collection("Group B", group_b);
+    try {
+        database* _database = new b_tree_database(3);
+        _database->add_pool("data_pool");
+        _database->add_scheme("data_pool", "student_scheme");
+        _database->add_collection("data_pool", "student_scheme", "group_a");
+        _database->add_collection("data_pool", "student_scheme", "group_b");
 
-    data_pool.add_scheme("Student Scheme", student_scheme);
+        _database->add_data("data_pool", "student_scheme",
+            "group_a", "a", {"John", "Doe"});
 
-    std::cout << data_pool << std::endl;
+        _database->add_data("data_pool", "student_scheme",
+            "group_a", "b", {"Jane", "Smith"});
 
-    // Получение данных
-    scheme retrieved_scheme = data_pool.get_scheme("Student Scheme");
-    collection retrieved_group = retrieved_scheme.get_collection("Group A");
-    data student = retrieved_group.get_data("001");
+        _database->add_data("data_pool", "student_scheme",
+            "group_b", "c", {"Emily", "Jones"});
 
-    std::cout << "Retrieved student: " << student.first_name << " " << student.last_name << std::endl;
+        _database->add_data("data_pool", "student_scheme",
+            "group_b", "d", {"Michael", "Brown"});
+
+        std::cout << _database->find_collection("data_pool", "student_scheme","group_a") << std::endl;
+        std::cout << _database->find_collection("data_pool", "student_scheme","group_b") << std::endl;
+
+        std::cout << "lol" << std::endl;
+
+        delete _database;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
 
     return 0;
 }
