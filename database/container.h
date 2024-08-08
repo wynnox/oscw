@@ -20,11 +20,7 @@ protected:
         delete _container;
     }
 
-    container(const container& other) : _t(other._t), _container(new b_tree<Key, Value>(*other._container))
-    {
-        std::cout << "Copy constructor called with t: " << other._t << std::endl;
-        std::cout << "_t initialized to: " << _t << std::endl;
-    }
+    container(const container& other) : _t(other._t), _container(new b_tree<Key, Value>(*other._container)) {}
 
     container& operator=(const container& other)
     {
