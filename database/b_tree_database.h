@@ -91,7 +91,7 @@ public:
         std::cout << "add coll" << std::endl;
     }
 
-    [[nodiscard]] collection& find_collection(const std::string& pool_name, const std::string& scheme_name, const std::string& collection_name) const override
+    [[nodiscard]] collection& find_collection(const std::string& pool_name, const std::string& scheme_name, const std::string& collection_name) const
     {
         return const_cast<collection&>(find_scheme(pool_name, scheme_name).get_collection(collection_name));
     }

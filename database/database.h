@@ -22,7 +22,7 @@ public:
                   const std::string& id,
                   data _data) const = 0;
 
-    virtual collection& find_collection(const std::string& pool_name, const std::string& scheme_name, const std::string& collection_name) const = 0;
+    // virtual collection& find_collection(const std::string& pool_name, const std::string& scheme_name, const std::string& collection_name) const = 0;
 };
 
 #endif // DATABASE_H

@@ -6,6 +6,7 @@
 #include "collectoin.h"
 #include "data.h"
 #include "database.h"
+#include "file_system_database.h"
 
 
 int main()
@@ -33,8 +34,33 @@ int main()
         _database->add_data("data_pool", "student_scheme",
             "group_b", "d", {"Michael", "Brown"});
 
-        std::cout << _database->find_collection("data_pool", "student_scheme","group_a") << std::endl;
-        std::cout << _database->find_collection("data_pool", "student_scheme","group_b") << std::endl;
+        std::cout << "lol" << std::endl;
+
+        delete _database;
+    }
+    catch (const std::exception &e)
+    {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
+    try {
+        database* _database = new file_system_database();
+        _database->add_pool("data_pool");
+        _database->add_scheme("data_pool", "student_scheme");
+        _database->add_collection("data_pool", "student_scheme", "group_a");
+        _database->add_collection("data_pool", "student_scheme", "group_b");
+
+        _database->add_data("data_pool", "student_scheme",
+            "group_a", "a", {"John", "Doe"});
+
+        _database->add_data("data_pool", "student_scheme",
+            "group_a", "b", {"Jane", "Smith"});
+
+        _database->add_data("data_pool", "student_scheme",
+            "group_b", "c", {"Emily", "Jones"});
+
+        _database->add_data("data_pool", "student_scheme",
+            "group_b", "d", {"Michael", "Brown"});
 
         std::cout << "lol" << std::endl;
 
