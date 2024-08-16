@@ -60,6 +60,11 @@ protected:
         return _container->obtain(key);
     }
 
+    std::vector<typename associative_container<Key, Value>::key_value_pair> get_item_in_range(const Key& lower_bound, const Key& upper_bound) const
+    {
+        return _container->obtain_between(lower_bound, upper_bound, 1, 1);
+    }
+
     void remove_item(const Key& key)
     {
         _container->dispose(key);

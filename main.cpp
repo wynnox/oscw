@@ -1,70 +1,70 @@
 #include <iostream>
 #include <string>
+#include <fstream>
 
 #include "database_b_tree.h"
-#include "pool.h"
-#include "collectoin.h"
-#include "data.h"
 #include "database.h"
-#include "database_file_system.h"
+// #include "database_file_system.h"
+#include "command.h"
+#include "logger/client_logger/client_logger.h"
 
+logger *create_logger(
+    std::vector<std::pair<std::string, logger::severity>> const &output_file_streams_setup,
+    bool use_console_stream = true,
+    logger::severity console_stream_severity = logger::severity::debug)
+{
+
+    logger_builder *builder = new client_logger_builder();
+
+    if (use_console_stream)
+    {
+        builder->add_console_stream(console_stream_severity);
+    }
+
+    for (auto &output_file_stream_setup: output_file_streams_setup)
+    {
+        builder->add_file_stream(output_file_stream_setup.first, output_file_stream_setup.second);
+    }
+
+    logger *built_logger = builder->build();
+
+    delete builder;
+
+    return built_logger;
+}
 
 int main()
 {
     std::string command1 = "-in_memory_cache";
     std::string command2 = "-file_system";
 
+    command _command;
 
-    try {
-        database* _database = new b_tree_database(3);
-        _database->add_pool("data_pool");
-        _database->add_scheme("data_pool", "student_scheme");
-        _database->add_collection("data_pool", "student_scheme", "group_a");
-        _database->add_collection("data_pool", "student_scheme", "group_b");
-
-        _database->add_data("data_pool", "student_scheme",
-            "group_a", "a", {"John", "Doe"});
-
-        _database->add_data("data_pool", "student_scheme",
-            "group_a", "b", {"Jane", "Smith"});
-
-        _database->add_data("data_pool", "student_scheme",
-            "group_b", "c", {"Emily", "Jones"});
-
-        _database->add_data("data_pool", "student_scheme",
-            "group_b", "d", {"Michael", "Brown"});
-
-        std::cout << "lol" << std::endl;
-
-        delete _database;
-    }
-    catch (const std::exception &e)
+    logger *logger = create_logger(std::vector<std::pair<std::string, logger::severity>>
     {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
+        { "logs.txt", logger::severity::trace }
+    });
 
     try {
-        database* _database = new file_system_database();
-        _database->add_pool("data_pool");
-        _database->add_scheme("data_pool", "student_scheme");
-        _database->add_collection("data_pool", "student_scheme", "group_a");
-        _database->add_collection("data_pool", "student_scheme", "group_b");
+        database* _database = new b_tree_database(3, logger);
 
-        _database->add_data("data_pool", "student_scheme",
-            "group_a", "a", {"John", "Doe"});
+        std::ifstream input_file("file.txt");
 
-        _database->add_data("data_pool", "student_scheme",
-            "group_a", "b", {"Jane", "Smith"});
+        if (!input_file.is_open())
+        {
+            std::cerr << "error with opening file" << std::endl;
+            return 1;
+        }
 
-        _database->add_data("data_pool", "student_scheme",
-            "group_b", "c", {"Emily", "Jones"});
-
-        _database->add_data("data_pool", "student_scheme",
-            "group_b", "d", {"Michael", "Brown"});
-
-        std::cout << "lol" << std::endl;
+        std::string command_string;
+        while (std::getline(input_file, command_string))
+        {
+            _command.execute_command(_database, command_string);
+        }
+        input_file.close();
 
         delete _database;
+        delete logger;
     }
     catch (const std::exception &e)
     {

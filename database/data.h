@@ -32,7 +32,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const data& d)
     {
-        os << d.first_name << " " << d.last_name;
+        os << d.first_name << " " << d.last_name << std::endl;
         return os;
     }
 };

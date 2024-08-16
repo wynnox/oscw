@@ -21,6 +21,18 @@ public:
         return get_item(key);
     }
 
+    std::vector<data> get_data_in_range(const std::string& key1, const std::string& key2) const
+    {
+        std::vector<data> result;
+        auto items = get_item_in_range(key1, key2);
+
+        for (const auto& item : items) {
+            result.push_back(item.value);
+        }
+
+        return result;
+    }
+
     void remove_data(const std::string& key)
     {
         remove_item(key);

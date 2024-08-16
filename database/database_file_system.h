@@ -102,17 +102,7 @@ public:
             return;
         }
 
-        std::string path = build_path(pool_name, scheme_name, collection_name) + "/" + id;
-
-        if(std::filesystem::exists(path))
-        {
-            std::cout << "lol тут не продуманая логика" << std::endl;
-            return;
-        }
-
-        std::ofstream ofs(path);
-
-        ofs << _data.first_name << " " << _data.last_name;
+        //сделать как страничную организацию памяти
     }
 
 };

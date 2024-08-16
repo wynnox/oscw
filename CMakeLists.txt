@@ -39,6 +39,7 @@ add_executable(course_project ${SOURCES}
         database/data.h
         database/database.h
         database/compasion.h
-        database/database_file_system.h)
+        database/database_file_system.h
+        database/command.h)
 
 target_link_libraries(course_project PRIVATE nlohmann_json::nlohmann_json)
