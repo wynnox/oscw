@@ -89,7 +89,19 @@ public:
             }
         }
         //TODO
-        else if (word == "UPDATE_DATA") {}
+        else if (word == "UPDATE_DATA")
+        {
+            if(iss >> pool && iss >> scheme && iss >> collection && iss >> id && iss >> n && iss >> sn)
+            {
+                // TODO парсинг бы data
+                if(!(iss >> extra))
+                    _db->update_data(pool, scheme, collection, id, {n, sn});
+            }
+            else
+            {
+                return;
+            }
+        }
         //TODO
         else if (word == "RM_DATA")
         {

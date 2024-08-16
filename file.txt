@@ -8,3 +8,6 @@ ADD_DATA data_pool student_scheme group_b 3 Emily Jones
 FIND_DATA data_pool student_scheme group_b 3
 ADD_DATA data_pool student_scheme group_b 4 Michael Brown
 FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
+PRINT
+UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
+PRINT

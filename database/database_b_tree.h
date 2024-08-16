@@ -66,7 +66,7 @@ public:
         try
         {
             _logger->trace("ADD POOL: " + pool_name);
-            _database->insert(pool_name, pool(_t));
+            _database->insert(pool_name, pool(_t), insertion_strategy::throw_an_exception);
         }
         catch (const std::exception &e)
         {
@@ -178,6 +178,24 @@ public:
         }
 
     }
+
+    void update_data(const std::string& pool_name,
+                  const std::string& scheme_name,
+                  const std::string& collection_name,
+                  const std::string& id,
+                  data _data) const override
+    {
+        try
+        {
+            find_collection(pool_name, scheme_name, collection_name).update_data(id, _data);
+            _logger->trace("UPDATE DATA: " + pool_name + "/" + scheme_name + "/" + collection_name + "/" + id);
+        }
+        catch(const std::exception &e)
+        {
+            throw std::logic_error("Error adding data: " + pool_name + "/" + scheme_name + "/" + collection_name + "/" + id + ": " + e.what());
+        }
+    }
+
 
     void rm_data(const std::string& pool_name,
                   const std::string& scheme_name,

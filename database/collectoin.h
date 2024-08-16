@@ -16,6 +16,11 @@ public:
         add_item(key, value);
     }
 
+    void update_data(const std::string& key, const data& value)
+    {
+        update_item(key, value);
+    }
+
     const data& get_data(const std::string& key) const
     {
         return get_item(key);

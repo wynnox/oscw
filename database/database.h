@@ -24,6 +24,11 @@ public:
                   const std::string& collection_name,
                   const std::string& id,
                   data _data) const = 0;
+    virtual void update_data(const std::string& pool_name,
+                  const std::string& scheme_name,
+                  const std::string& collection_name,
+                  const std::string& id,
+                  data _data) const = 0;
     virtual void rm_data(const std::string& pool_name,
                   const std::string& scheme_name,
                   const std::string& collection_name,

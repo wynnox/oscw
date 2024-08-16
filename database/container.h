@@ -52,7 +52,12 @@ protected:
 
     void add_item(const Key& key, const Value& value)
     {
-        _container->insert(key, value);
+        _container->insert(key, value, insertion_strategy::throw_an_exception);
+    }
+
+    void update_item(const Key& key, const Value& value)
+    {
+        _container->insert(key, value, insertion_strategy::update_value);
     }
 
     const Value& get_item(const Key& key) const
@@ -60,6 +65,7 @@ protected:
         return _container->obtain(key);
     }
 
+    //TODO
     std::vector<typename associative_container<Key, Value>::key_value_pair> get_item_in_range(const Key& lower_bound, const Key& upper_bound) const
     {
         return _container->obtain_between(lower_bound, upper_bound, 1, 1);

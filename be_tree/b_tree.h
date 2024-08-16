@@ -3,6 +3,12 @@
 
 #include <search_tree.h>
 
+enum class insertion_strategy
+{
+    update_value,
+    throw_an_exception
+};
+
 template<
     typename tkey,
     typename tvalue>
@@ -13,17 +19,27 @@ class b_tree final:
 private:
 
     void insert_inner(
-        typename associative_container<tkey, tvalue>::key_value_pair &&kvp);
+        typename associative_container<tkey, tvalue>::key_value_pair &&kvp, insertion_strategy strategy);
 
 public:
 
     void insert(
-        tkey const &key,
-        tvalue const &value) override;
+    tkey const &key,
+    tvalue const &value) override;
 
     void insert(
         tkey const &key,
         tvalue &&value) override;
+
+    void insert(
+        tkey const &key,
+        tvalue const &value,
+        insertion_strategy strategy = insertion_strategy::throw_an_exception);
+
+    void insert(
+        tkey const &key,
+        tvalue &&value,
+        insertion_strategy strategy = insertion_strategy::throw_an_exception);
 
     tvalue const &obtain(
         tkey const &key) override;
@@ -329,7 +345,7 @@ template<
     typename tkey,
     typename tvalue>
 void b_tree<tkey, tvalue>::insert_inner(
-    typename associative_container<tkey, tvalue>::key_value_pair &&kvp)
+    typename associative_container<tkey, tvalue>::key_value_pair &&kvp, insertion_strategy strategy)
 {
     auto path = this->find_path(kvp.key);
     auto *node = *path.top().first;
@@ -346,8 +362,12 @@ void b_tree<tkey, tvalue>::insert_inner(
 
     if (path.top().second >= 0)
     {
-        // TODO: update mechanics o_O
-        throw std::logic_error("duplicate key");
+        if(strategy == insertion_strategy::throw_an_exception)
+            throw std::logic_error("duplicate key");
+
+        int index = path.top().second;
+        node->keys_and_values[index].value = kvp.value;
+        return;
     }
 
     size_t subtree_index = -path.top().second - 1;
@@ -389,7 +409,7 @@ void b_tree<tkey, tvalue>::insert(
     const tkey &key,
     const tvalue &value)
 {
-    insert_inner(std::move(typename associative_container<tkey, tvalue>::key_value_pair(key, value)));
+    insert_inner(std::move(typename associative_container<tkey, tvalue>::key_value_pair(key, value)), insertion_strategy::throw_an_exception);
 }
 
 template<
@@ -399,7 +419,29 @@ void b_tree<tkey, tvalue>::insert(
     const tkey &key,
     tvalue &&value)
 {
-    insert_inner(std::move(typename associative_container<tkey, tvalue>::key_value_pair(key, std::move(value))));
+    insert_inner(std::move(typename associative_container<tkey, tvalue>::key_value_pair(key, std::move(value))), insertion_strategy::throw_an_exception);
+}
+
+template<
+    typename tkey,
+    typename tvalue>
+void b_tree<tkey, tvalue>::insert(
+    const tkey &key,
+    const tvalue &value,
+    insertion_strategy strategy)
+{
+    insert_inner(std::move(typename associative_container<tkey, tvalue>::key_value_pair(key, value)), strategy);
+}
+
+template<
+    typename tkey,
+    typename tvalue>
+void b_tree<tkey, tvalue>::insert(
+    const tkey &key,
+    tvalue &&value,
+    insertion_strategy strategy)
+{
+    insert_inner(std::move(typename associative_container<tkey, tvalue>::key_value_pair(key, std::move(value))), strategy);
 }
 
 template<
