@@ -5,7 +5,8 @@
 #include "database_b_tree.h"
 #include "database.h"
 // #include "database_file_system.h"
-#include "command.h"
+
+#include "command/command_handler.h"
 #include "logger/client_logger/client_logger.h"
 
 logger *create_logger(
@@ -38,7 +39,8 @@ int main()
     std::string command1 = "-in_memory_cache";
     std::string command2 = "-file_system";
 
-    command _command;
+    // command _command;
+    command_handler _command;
 
     logger *logger = create_logger(std::vector<std::pair<std::string, logger::severity>>
     {
