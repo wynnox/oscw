@@ -19,10 +19,12 @@ public:
     explicit b_tree_database(size_t t, logger* logger) : _t(t), _logger(logger)
     {
         _database = new b_tree<std::string, pool>(_t);
+        _logger->trace("CREATE B_TREE DATABASE");
     }
 
     ~b_tree_database() override
     {
+        _logger->trace("DELETE B_TREE DATABASE");
         delete _database;
     }
 

@@ -1,4 +1,6 @@
-/home/nncl/oscw/cmake-build-debug/CMakeFiles/course_project.dir
+/home/nncl/oscw/cmake-build-debug/CMakeFiles/client_program.dir
+/home/nncl/oscw/cmake-build-debug/CMakeFiles/entrypoint_program.dir
+/home/nncl/oscw/cmake-build-debug/CMakeFiles/storage_program.dir
 /home/nncl/oscw/cmake-build-debug/CMakeFiles/edit_cache.dir
 /home/nncl/oscw/cmake-build-debug/CMakeFiles/rebuild_cache.dir
 /home/nncl/oscw/cmake-build-debug/_deps/json-build/CMakeFiles/edit_cache.dir

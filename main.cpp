@@ -5,6 +5,7 @@
 #include "database_b_tree.h"
 #include "database.h"
 // #include "database_file_system.h"
+#include <crow.h>
 
 #include "command/command_handler.h"
 #include "logger/client_logger/client_logger.h"
@@ -34,44 +35,75 @@ logger *create_logger(
     return built_logger;
 }
 
+
 int main()
 {
-    std::string command1 = "-in_memory_cache";
-    std::string command2 = "-file_system";
-
-    // command _command;
-    command_handler _command;
+    crow::SimpleApp app;
 
     logger *logger = create_logger(std::vector<std::pair<std::string, logger::severity>>
     {
-        { "logs.txt", logger::severity::trace }
+        {"logs.txt", logger::severity::trace}
     });
 
-    try {
-        database* _database = new b_tree_database(3, logger);
+    database* _database = new b_tree_database(3, logger);
+    command_handler _command_handler;
 
-        std::ifstream input_file("file.txt");
-
-        if (!input_file.is_open())
-        {
-            std::cerr << "error with opening file" << std::endl;
-            return 1;
+    CROW_ROUTE(app, "/execute").methods("POST"_method)([&_database, &_command_handler](const crow::request &req) {
+        try {
+            std::string command_string = req.body;
+            _command_handler.execute_command(_database, command_string);
+            return crow::response(200, "Command executed successfully");
+        } catch (const std::exception &e) {
+            return crow::response(500, std::string("Error executing command: ") + e.what());
         }
+    });
 
-        std::string command_string;
-        while (std::getline(input_file, command_string))
-        {
-            _command.execute_command(_database, command_string);
-        }
-        input_file.close();
+    app.port(8080).multithreaded().run();
 
-        delete _database;
-        delete logger;
-    }
-    catch (const std::exception &e)
-    {
-        std::cerr << "Error: " << e.what() << std::endl;
-    }
+    delete _database;
+    delete logger;
 
     return 0;
 }
+
+// int main()
+// {
+//     std::string command1 = "-in_memory_cache";
+//     std::string command2 = "-file_system";
+//
+//     // command _command;
+//     command_handler _command;
+//
+//     logger *logger = create_logger(std::vector<std::pair<std::string, logger::severity>>
+//     {
+//         { "logs.txt", logger::severity::trace }
+//     });
+//
+//     try {
+//         database* _database = new b_tree_database(3, logger);
+//
+//         std::ifstream input_file("file.txt");
+//
+//         if (!input_file.is_open())
+//         {
+//             std::cerr << "error with opening file" << std::endl;
+//             return 1;
+//         }
+//
+//         std::string command_string;
+//         while (std::getline(input_file, command_string))
+//         {
+//             _command.execute_command(_database, command_string);
+//         }
+//         input_file.close();
+//
+//         delete _database;
+//         delete logger;
+//     }
+//     catch (const std::exception &e)
+//     {
+//         std::cerr << "Error: " << e.what() << std::endl;
+//     }
+//
+//     return 0;
+// }

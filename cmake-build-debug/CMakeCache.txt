@@ -329,15 +329,6 @@ JSON_MultipleHeaders:BOOL=ON
 JSON_SystemInclude:BOOL=OFF
 
 //Value Computed by CMake
-Project_BINARY_DIR:STATIC=/home/nncl/oscw/cmake-build-debug
-
-//Value Computed by CMake
-Project_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Project_SOURCE_DIR:STATIC=/home/nncl/oscw
-
-//Value Computed by CMake
 course_project_BINARY_DIR:STATIC=/home/nncl/oscw/cmake-build-debug
 
 //Value Computed by CMake
@@ -354,15 +345,6 @@ nlohmann_json_IS_TOP_LEVEL:STATIC=OFF
 
 //Value Computed by CMake
 nlohmann_json_SOURCE_DIR:STATIC=/home/nncl/oscw/cmake-build-debug/_deps/json-src
-
-//Value Computed by CMake
-oscw_BINARY_DIR:STATIC=/home/nncl/oscw/cmake-build-debug
-
-//Value Computed by CMake
-oscw_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-oscw_SOURCE_DIR:STATIC=/home/nncl/oscw
 
 
 ########################

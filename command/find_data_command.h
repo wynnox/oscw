@@ -9,6 +9,7 @@ class find_data_command final: public command {
 private:
     database* db;
     std::string pool, scheme, collection, id;
+    data result;
 
 public:
     find_data_command(database* db, const std::string& pool, const std::string& scheme,
@@ -17,7 +18,12 @@ public:
 
     void execute() override
     {
-        db->find_data(pool, scheme, collection, id);
+        result = db->find_data(pool, scheme, collection, id);
+    }
+
+    data get_result() const
+    {
+        return result;
     }
 };
 

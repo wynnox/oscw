@@ -3,6 +3,7 @@
 
 #include <string>
 #include <iostream>
+#include "data.h"
 
 class database
 {

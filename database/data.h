@@ -2,6 +2,7 @@
 #define DATA_H
 
 #include <string>
+#include <nlohmann/json.hpp>
 
 class data
 {
@@ -21,6 +22,15 @@ public:
         //TODO
         first_name = std::move(data_arg[0]);
         last_name = std::move(data_arg[1]);
+    }
+
+    friend void to_json(nlohmann::json& j, const data& d) {
+        j = nlohmann::json{{"first_name", d.first_name}, {"last_name", d.last_name}};
+    }
+
+    friend void from_json(const nlohmann::json& j, data& d) {
+        j.at("first_name").get_to(d.first_name);
+        j.at("last_name").get_to(d.last_name);
     }
 
     data(const data& other) = default;

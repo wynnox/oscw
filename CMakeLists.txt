@@ -13,6 +13,7 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(json)
 
+# Добавляем директории с заголовочными файлами
 include_directories(allocator/allocator)
 include_directories(allocator/allocator_global_heap)
 include_directories(be_tree)
@@ -20,25 +21,29 @@ include_directories(database)
 include_directories(logger/client_logger)
 include_directories(logger/logger)
 
-file(GLOB_RECURSE SOURCES
-        main.cpp
+# Сбор общих исходных файлов
+file(GLOB_RECURSE COMMON_SOURCES
         allocator/allocator/*.cpp
         allocator/allocator/*.h
         allocator/allocator_global_heap/*.cpp
         allocator/allocator_global_heap/*.h
         be_tree/*.h
         database/*.h
+        database/*.cpp
         logger/client_logger/*.cpp
         logger/client_logger/*.h
         logger/logger/*.cpp
         logger/logger/*.h
 )
 
-add_executable(course_project ${SOURCES}
-        allocator/allocator_global_heap/typename_holder.h
-        database/data.h
-        database/database.h
-        database/compasion.h
-        database/database_file_system.h)
+# Компиляция client.cpp
+add_executable(client_program client.cpp ${COMMON_SOURCES})
+target_link_libraries(client_program PRIVATE nlohmann_json::nlohmann_json pthread curl)
 
-target_link_libraries(course_project PRIVATE nlohmann_json::nlohmann_json)
+# Компиляция entrypoint.cpp
+add_executable(entrypoint_program entrypoint.cpp ${COMMON_SOURCES})
+target_link_libraries(entrypoint_program PRIVATE nlohmann_json::nlohmann_json pthread curl)
+
+# Компиляция storage.cpp
+add_executable(storage_program storage.cpp ${COMMON_SOURCES})
+target_link_libraries(storage_program PRIVATE nlohmann_json::nlohmann_json pthread curl)
