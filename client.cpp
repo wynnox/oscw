@@ -1,39 +1,60 @@
 #include <iostream>
 #include <fstream>
-#include "curl/curl.h"
-#include <nlohmann/json.hpp>
-#include <vector>
+#include <curl/curl.h>
 
-void send_request(const std::string& json_command, const std::string& server_url, const std::string& method) {
+size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s)
+{
+    size_t new_length = size * nmemb;
+    try {
+        s->append(static_cast<char*>(contents), new_length);
+    } catch (std::bad_alloc& e) {
+        return 0;
+    }
+    return new_length;
+}
+
+
+void send_request(const std::string& command, const std::string& server_url)
+{
     CURL* curl = curl_easy_init();
+    std::string response_string;
 
-    if(curl) {
-        curl_easy_setopt(curl, CURLOPT_URL, server_url.c_str());
+    if (curl)
+    {
+        std::string full_url = server_url + "/command";
+        curl_easy_setopt(curl, CURLOPT_URL, full_url.c_str());
+        curl_easy_setopt(curl, CURLOPT_POSTFIELDS, command.c_str());
 
-        if (method == "POST")
-        {
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_command.c_str());
-        }
-        else if (method == "PUT")
-        {
-            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "PUT");
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_command.c_str());
-        }
-        else if (method == "DELETE")
-        {
-            curl_easy_setopt(curl, CURLOPT_CUSTOMREQUEST, "DELETE");
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, json_command.c_str());
-        }
-        else if (method == "GET")
-            {
-            // GET не отправляет тело, так что просто устанавливаем URL
-        }
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &response_string);
 
         CURLcode res = curl_easy_perform(curl);
-
-        if(res != CURLE_OK)
+        if (res != CURLE_OK)
         {
             std::cerr << "Failed to send command: " << curl_easy_strerror(res) << std::endl;
+        }
+        else
+        {
+            long response_code;
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+            std::cout << "HTTP Response Code: " << response_code << std::endl;
+            switch (response_code)
+            {
+                case 200:
+                    std::cout << "Operation successful: " << response_string << std::endl;
+                    break;
+                case 201:
+                    break;
+                case 202:
+                    break;
+                case 204:
+                    break;
+                case 404:
+                    break;
+                default:
+                    std::cerr << "Failed with HTTP code: " << response_code << std::endl;
+                break;
+            }
         }
 
         curl_easy_cleanup(curl);
@@ -44,74 +65,9 @@ void send_request(const std::string& json_command, const std::string& server_url
     }
 }
 
-void send_command_to_entrypoint(const std::string& command, const std::string& server_url)
-{
-    std::istringstream iss(command);
-    std::vector<std::string> tokens;
-    std::string token;
-    while (iss >> token)
+int main(int argc, char* argv[]) {
+    if (argc != 3)
     {
-        tokens.push_back(token);
-    }
-
-    nlohmann::json command_json;
-    std::string method, url;
-
-    if (tokens[0] == "ADD_POOL")
-    {
-        method = "POST";
-        url = server_url + "pools";
-        command_json["pool"] = tokens[1];
-    } else if (tokens[0] == "RM_POOL") {
-        method = "DELETE";
-        url = server_url + "pools/" + tokens[1];
-    // } else if (tokens[0] == "ADD_SCHEME") {
-    //     method = "POST";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes";
-    //     command_json["scheme"] = tokens[2];
-    // } else if (tokens[0] == "RM_SCHEME") {
-    //     method = "DELETE";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2];
-    // } else if (tokens[0] == "ADD_COLLECTION") {
-    //     method = "POST";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2] + "/collections";
-    //     command_json["collection"] = tokens[3];
-    // } else if (tokens[0] == "RM_COLLECTION") {
-    //     method = "DELETE";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2] + "/collections/" + tokens[3];
-    // } else if (tokens[0] == "ADD_DATA") {
-    //     method = "POST";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2] + "/collections/" + tokens[3] + "/data";
-    //     command_json["id"] = tokens[4];
-    //     for (size_t i = 5; i < tokens.size(); ++i) {
-    //         command_json["data"].push_back(tokens[i]);
-    //     }
-    // } else if (tokens[0] == "UPDATE_DATA") {
-    //     method = "PUT";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2] + "/collections/" + tokens[3] + "/data/" + tokens[4];
-    //     for (size_t i = 5; i < tokens.size(); ++i) {
-    //         command_json["data"].push_back(tokens[i]);
-    //     }
-    // } else if (tokens[0] == "FIND_DATA") {
-    //     method = "GET";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2] + "/collections/" + tokens[3] + "/data/" + tokens[4];
-    // } else if (tokens[0] == "RM_DATA") {
-    //     method = "DELETE";
-    //     url = server_url + "/pools/" + tokens[1] + "/schemes/" + tokens[2] + "/collections/" + tokens[3] + "/data/" + tokens[4];
-    // } else if (tokens[0] == "PRINT") {
-    //     method = "GET";
-    //     url = server_url + "/print";
-    } else {
-        throw std::logic_error("Invalid command");
-    }
-
-    std::string json_command = command_json.dump();
-    send_request(json_command, url, method);
-}
-
-int main(int argc, char* argv[])
-{
-    if (argc != 3) {
         std::cerr << "Usage: " << argv[0] << " <command_file> <server_url>" << std::endl;
         return 1;
     }
@@ -131,8 +87,8 @@ int main(int argc, char* argv[])
     {
         if (!command.empty())
         {
-            std::cout << "Sending command: " << command << std::endl;
-            send_command_to_entrypoint(command, server_url);
+            // std::cout << "Sending command: " << command << std::endl;
+            send_request(command, server_url);
         }
     }
 

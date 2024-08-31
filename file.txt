@@ -1,2 +1,10 @@
 ADD_POOL data_pool
-RM_POOL data_pool
+ADD_SCHEME data_pool student_scheme
+ADD_COLLECTION data_pool student_scheme group_a
+ADD_COLLECTION data_pool student_scheme group_b
+ADD_DATA data_pool student_scheme group_a 1 John Doe
+ADD_DATA data_pool student_scheme group_a 2 Jane Smith
+ADD_DATA data_pool student_scheme group_b 3 Emily Jones
+FIND_DATA data_pool student_scheme group_b 3
+ADD_DATA data_pool student_scheme group_b 4 Michael Brown
+UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ

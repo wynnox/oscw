@@ -11,27 +11,22 @@ public:
     std::string last_name;
 
     data() = default;
-    data(const std::string& first_name, const std::string& last_name)
-        : first_name(first_name), last_name(last_name) {}
-    data(const std::vector<std::string>&& data_arg)
+
+    data(const nlohmann::json& j)
     {
-        if(data_arg.size() != 2)
+        if (!j.is_array() || j.size() != 2)
         {
-            throw std::logic_error("Invalid number of arguments for NEW_DATA");
+            throw std::logic_error("Invalid JSON format for data");
         }
-        //TODO
-        first_name = std::move(data_arg[0]);
-        last_name = std::move(data_arg[1]);
+        first_name = j.at(0).get<std::string>();
+        last_name = j.at(1).get<std::string>();
     }
 
-    friend void to_json(nlohmann::json& j, const data& d) {
-        j = nlohmann::json{{"first_name", d.first_name}, {"last_name", d.last_name}};
+    nlohmann::json to_json() const
+    {
+        return nlohmann::json::array({first_name, last_name});
     }
 
-    friend void from_json(const nlohmann::json& j, data& d) {
-        j.at("first_name").get_to(d.first_name);
-        j.at("last_name").get_to(d.last_name);
-    }
 
     data(const data& other) = default;
 
