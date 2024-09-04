@@ -1,2 +1,13 @@
-29.08.2024 18:14:12 TRACE CREATE B_TREE DATABASE
-29.08.2024 18:14:28 TRACE DELETE B_TREE DATABASE
+04.09.2024 14:53:06 TRACE CREATE B_TREE DATABASE
+04.09.2024 14:53:12 TRACE ADD POOL: data_pool
+04.09.2024 14:53:12 TRACE ADD SCHEME: data_pool/student_scheme
+04.09.2024 14:53:12 TRACE ADD COLLECTION: data_pool/student_scheme/group_a
+04.09.2024 14:53:12 TRACE ADD COLLECTION: data_pool/student_scheme/group_b
+04.09.2024 14:53:12 TRACE ADD DATA: data_pool/student_scheme/group_a/1
+04.09.2024 14:53:12 TRACE ADD DATA: data_pool/student_scheme/group_a/2
+04.09.2024 14:53:12 TRACE ADD DATA: data_pool/student_scheme/group_b/3
+04.09.2024 14:53:12 TRACE FIND DATA: data_pool/student_scheme/group_b/3
+04.09.2024 14:53:12 TRACE ADD DATA: data_pool/student_scheme/group_b/4
+04.09.2024 14:53:12 TRACE UPDATE DATA: data_pool/student_scheme/group_b/3
+04.09.2024 14:53:12 TRACE FIND DATA IN RANGE: data_pool/student_scheme/group_b/3 4
+04.09.2024 15:07:34 TRACE DELETE B_TREE DATABASE
