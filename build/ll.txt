@@ -1,0 +1,43 @@
+Storage server added on port: 8081
+Received from storage server: Pool added successfully on storage server
+Received from storage server: 500 Internal Server Error
+
+Received from storage server: Scheme added successfully on storage server
+Received from storage server: Collection added successfully on storage server
+Received from storage server: Data added successfully on storage server
+Received from storage server: Scheme added successfully on storage server
+Received from storage server: Collection added successfully on storage server
+Received from storage server: Collection added successfully on storage server
+Received from storage server: Data added successfully on storage server
+Received from storage server: Data added successfully on storage server
+Received from storage server: Data added successfully on storage server
+Returning data: ["Emily","Jones"]
+Received from storage server: ["Emily","Jones"]
+Storage server added on port: 8082
+Received from storage server: Pool added successfully on storage server
+Received from storage server: Scheme added successfully on storage server
+Received from storage server: Collection added successfully on storage server
+Received from storage server: Data added successfully on storage server
+Received from storage server: Data added successfully on storage server
+Received from storage server: 
+Received from storage server: [["Emily","JJJ"],["Michael","Brown"]]
+Received from storage server: {"jkwhi":{"iiiii":{"ooooo":{"7":["rrrrr","rrrt"]}}}}
+Данные с удаляемого сервера: {"jkwhi":{"iiiii":{"ooooo":{"7":["rrrrr","rrrt"]}}}}
+Shutting down storage server
+Received from storage server: Server shutting down
+Received data for import: {
+    "jkwhi": {
+        "iiiii": {
+            "ooooo": {
+                "7": [
+                    "rrrrr",
+                    "rrrt"
+                ]
+            }
+        }
+    }
+}
+Adding pool: jkwhi
+Received from storage server: Error while importing data
+Результат импорта данных: Error while importing data
+Removing least loaded server: http://127.0.0.1:8082
