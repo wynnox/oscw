@@ -161,6 +161,9 @@ public:
         {
             std::lock_guard<std::mutex> lock(store_mutex);
 
+            nlohmann::json json_response = _db->serialize_tree();
+            std::cout << "dataaaa" << json_response.dump(4) << std::endl;
+
             try {
                 auto json_data = nlohmann::json::parse(req.body);
                 std::cout << "Received data for import: " << json_data.dump(4) << std::endl;
@@ -168,8 +171,6 @@ public:
                 for (const auto& pool_item : json_data.items())
                 {
                     std::string pool_name = pool_item.key();
-
-
 
                     std::cout << "Adding pool: " << pool_name << std::endl;
                     add_pool cmd(_db, pool_name);
@@ -180,14 +181,16 @@ public:
                     {
                         std::string scheme_name = scheme_item.key();
                         std::cout << "Adding scheme: " << scheme_name << std::endl;
-                        _db->add_scheme(pool_name, scheme_name);
+                        add_scheme cmd1(_db, pool_name, scheme_name);
+                        cmd1.execute();
 
 
                         for (const auto& collection_item : scheme_item.value().items())
                         {
                             std::string collection_name = collection_item.key();
                             std::cout << "Adding collection: " << collection_name << std::endl;
-                            _db->add_collection(pool_name, scheme_name, collection_name);
+                            add_collection cmd2(_db, pool_name, scheme_name, collection_name);
+                            cmd2.execute();
 
                             for (const auto& data_item : collection_item.value().items())
                             {
@@ -195,14 +198,17 @@ public:
                                 json data_value = data_item.value();
                                 std::cout << "Adding data: ID = " << data_id << ", value = " << data_value << std::endl;
 
-                                _db->add_data(pool_name, scheme_name, collection_name, data_id, data(data_value));
+                                add_data_command cmd4(_db, pool_name, scheme_name, collection_name, data_id, data(data_value));
+                                cmd4.execute();
                             }
                         }
                     }
                 }
 
                 return crow::response(200, "Data imported successfully");
-            } catch (const std::exception& e) {
+            }
+            catch (const std::exception& e)
+            {
                 std::cerr << "Exception while importing data: " << e.what() << std::endl;
                 return crow::response(500, "Error while importing data");
             }

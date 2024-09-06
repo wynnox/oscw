@@ -34,7 +34,7 @@ public:
 
     nlohmann::json serialize_to_json() const
     {
-        return container::serialize_to_json();  // Use container's serialization
+        return container::serialize_to_json();
     }
 };
 

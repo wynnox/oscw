@@ -17,7 +17,14 @@ public:
 
     void execute() override
     {
-        db->add_pool(pool);
+        try
+        {
+            db->add_pool(pool);
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Ошибка при обновлении данных о пулах: " << e.what() << std::endl;
+        }
     }
 };
 

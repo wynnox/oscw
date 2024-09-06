@@ -19,7 +19,7 @@ Received from storage server: Scheme added successfully on storage server
 Received from storage server: Collection added successfully on storage server
 Received from storage server: Data added successfully on storage server
 Received from storage server: Data added successfully on storage server
-Received from storage server: 
+Received from storage server:
 Received from storage server: [["Emily","JJJ"],["Michael","Brown"]]
 Received from storage server: {"jkwhi":{"iiiii":{"ooooo":{"7":["rrrrr","rrrt"]}}}}
 Данные с удаляемого сервера: {"jkwhi":{"iiiii":{"ooooo":{"7":["rrrrr","rrrt"]}}}}

@@ -285,6 +285,19 @@ private:
 
 
 private:
+
+    void print_all_data_from_servers()
+    {
+        std::cout << "все данные " << std::endl;
+
+        for (const auto& server_url : storage_servers)
+        {
+            std::string all_data_url = server_url + "/all_data";
+            std::string all_data_json = send_request_to_storage("", all_data_url, "GET");
+            std::cout << "Данные с сервера " << server_url << ": " << all_data_json << std::endl;
+        }
+    }
+
     void start_storage_server(int port)
     {
         std::string command = "/home/nncl/oscw/build/storage_program " + std::to_string(port) + " &";
@@ -318,6 +331,7 @@ private:
 
     crow::response remove_storage_server()
     {
+
         std::lock_guard<std::mutex> lock(servers_mutex);
 
         if (storage_servers.size() <= 1)
@@ -344,30 +358,46 @@ private:
         std::string all_data_json = send_request_to_storage("", all_data_url, "GET");
         std::cout << "Данные с удаляемого сервера: " << all_data_json <<std::endl;
 
-        stop_storage_server(server_to_remove);
 
-
-        for (const auto& server_url : storage_servers)
-        {
-            if (server_url != least_loaded_server)
-            {
-                std::string add_data_url = server_url + "/import_data";
-                std::string result = send_request_to_storage(all_data_json, add_data_url, "POST");
-                std::cout << "Результат импорта данных: " << result << std::endl;
-            }
-        }
-
-        // stop_storage_server(server_to_remove);
-
-        auto it = std::find(storage_servers.begin(), storage_servers.end(), least_loaded_server);
+        auto it = std::find(storage_servers.begin(), storage_servers.end(), server_to_remove);
         if (it != storage_servers.end())
         {
             storage_servers.erase(it);
             std::cout << "Removing least loaded server: " << least_loaded_server << std::endl;
-            return crow::response(200, "Removed server with least load: " + least_loaded_server);
+        }
+        else
+        {
+            return crow::response(500, "Error removing server");
         }
 
-        return crow::response(500, "Error removing server");
+        stop_storage_server(server_to_remove);
+
+        size_t target_server_index = get_least_loaded_server();
+        std::string target_server_url = storage_servers[target_server_index];
+
+
+        std::string add_data_url = target_server_url + "/import_data";
+        std::string result = send_request_to_storage(all_data_json, add_data_url, "POST");
+        std::cout << "Результат импорта данных на сервер с минимальной нагрузкой: " << result << std::endl;
+
+
+        try
+        {
+            json imported_data = json::parse(all_data_json);
+            for (auto& pool_item : imported_data.items())
+            {
+                std::string pool_name = pool_item.key();
+                pool_to_server[pool_name] = target_server_url;
+                std::cout << "Pool " << pool_name << " перенесен на сервер " << target_server_url << std::endl;
+            }
+        }
+        catch (const std::exception& e)
+        {
+            std::cerr << "Ошибка при обновлении данных о пулах: " << e.what() << std::endl;
+            return crow::response(500, "Error updating pool data");
+        }
+
+        return crow::response(201, "Removing server is done");
     }
 
 private:
