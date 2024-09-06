@@ -31,6 +31,11 @@ public:
         os << static_cast<const container<std::string, scheme>&>(pl);
         return os;
     }
+
+    nlohmann::json serialize_to_json() const
+    {
+        return container::serialize_to_json();  // Use container's serialization
+    }
 };
 
 #endif // POOL_H

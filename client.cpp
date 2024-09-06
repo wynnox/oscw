@@ -21,7 +21,22 @@ void send_request(const std::string& command, const std::string& server_url)
 
     if (curl)
     {
-        std::string full_url = server_url + "/command";
+        // std::string full_url = server_url + "/command";
+
+        std::string full_url;
+        if (command == "ADD_STORAGE")
+        {
+            full_url = server_url + "/add_storage";
+        }
+        else if (command == "REMOVE_STORAGE")
+        {
+            full_url = server_url + "/remove_storage";
+        }
+        else
+        {
+            full_url = server_url + "/command";
+        }
+
         curl_easy_setopt(curl, CURLOPT_URL, full_url.c_str());
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, command.c_str());
 
@@ -65,7 +80,8 @@ void send_request(const std::string& command, const std::string& server_url)
     }
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[])
+{
     if (argc != 3)
     {
         std::cerr << "Usage: " << argv[0] << " <command_file> <server_url>" << std::endl;
@@ -87,9 +103,9 @@ int main(int argc, char* argv[]) {
     {
         if (!command.empty())
         {
-            // std::cout << "Sending command: " << command << std::endl;
             send_request(command, server_url);
         }
+
     }
 
     return 0;

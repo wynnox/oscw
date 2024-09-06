@@ -4,6 +4,8 @@
 #include "b_tree.h"
 #include <iostream>
 #include "compasion.h"
+#include <nlohmann/json.hpp>
+
 
 template <typename Key, typename Value>
 class container
@@ -84,6 +86,20 @@ protected:
         }
         return os;
     }
+
+    nlohmann::json serialize_to_json() const
+    {
+        nlohmann::json json_container;
+
+        for (auto it = _container->begin_infix(); it != _container->end_infix(); ++it) {
+            auto [depth, index, key, value] = *it;
+            json_container[key] = value.to_json();
+        }
+
+        return json_container;
+    }
 };
+
+
 
 #endif //CONTAINER_H

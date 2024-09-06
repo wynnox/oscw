@@ -363,7 +363,10 @@ void b_tree<tkey, tvalue>::insert_inner(
     if (path.top().second >= 0)
     {
         if(strategy == insertion_strategy::throw_an_exception)
+        {
+
             throw std::logic_error("duplicate key");
+        }
 
         int index = path.top().second;
         node->keys_and_values[index].value = kvp.value;

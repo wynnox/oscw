@@ -1,10 +1,22 @@
-ADD_POOL data_pool
-ADD_SCHEME data_pool student_scheme
-ADD_COLLECTION data_pool student_scheme group_a
-ADD_COLLECTION data_pool student_scheme group_b
-ADD_DATA data_pool student_scheme group_a 1 John Doe
-ADD_DATA data_pool student_scheme group_a 2 Jane Smith
-ADD_DATA data_pool student_scheme group_b 3 Emily Jones
-FIND_DATA data_pool student_scheme group_b 3
-ADD_DATA data_pool student_scheme group_b 4 Michael Brown
-UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
+ADD_STORAGE
+ADD_POOL data_pool1
+ADD_POOL qdqd
+ADD_SCHEME qdqd qqqqqqqqq
+ADD_COLLECTION qdqd qqqqqqqqq qw
+ADD_DATA qdqd qqqqqqqqq qw 6 lol lololo
+ADD_SCHEME data_pool1 student_scheme
+ADD_COLLECTION data_pool1 student_scheme group_a
+ADD_COLLECTION data_pool1 student_scheme group_b
+ADD_DATA data_pool1 student_scheme group_a 1 John Doe
+ADD_DATA data_pool1 student_scheme group_a 2 Jane Smith
+ADD_DATA data_pool1 student_scheme group_b 3 Emily Jones
+FIND_DATA data_pool1 student_scheme group_b 3
+ADD_STORAGE
+ADD_POOL jkwhi
+ADD_SCHEME jkwhi iiiii
+ADD_COLLECTION jkwhi iiiii ooooo
+ADD_DATA jkwhi iiiii ooooo 7 rrrrr rrrt
+ADD_DATA data_pool1 student_scheme group_b 4 Michael Brown
+UPDATE_DATA data_pool1 student_scheme group_b 3 Emily JJJ
+FIND_DATA_IN_RANGE data_pool1 student_scheme group_b 3 4
+REMOVE_STORAGE

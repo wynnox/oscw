@@ -48,6 +48,16 @@ public:
         os << static_cast<const container<std::string, data>&>(coll);
         return os;
     }
+
+    nlohmann::json serialize_to_json() const
+    {
+        return container::serialize_to_json();  // Use container's serialization
+    }
+
+    nlohmann::json to_json() const
+    {
+        return serialize_to_json();  // Используем существующую функцию сериализации
+    }
 };
 
 #endif // COLLECTION_H

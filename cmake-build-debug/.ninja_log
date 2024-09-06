@@ -11,3 +11,13 @@
 23	2137	1724461987882332765	CMakeFiles/course_project.dir/client.cpp.o	b93b8decaf05e63c
 25	96	1724461985841332656	CMakeFiles/course_project.dir/storage.cpp.o	2d2a79a52e4960fa
 45555	46417	1724280170222550679	course_project	4c64ff4d3ae128ba
+11	300	1725590100542714015	CMakeFiles/storage_program.dir/allocator/allocator/allocator_guardant.cpp.o	12b375079b359b26
+11	1013	1725590101254722799	CMakeFiles/storage_program.dir/allocator/allocator/allocator_test_utils.cpp.o	85e37eba8acddf40
+12	2647	1725590102887742927	CMakeFiles/storage_program.dir/allocator/allocator_global_heap/allocator_global_heap.cpp.o	a50118cec615f152
+301	3490	1725590103728753283	CMakeFiles/storage_program.dir/logger/logger/logger.cpp.o	6886adbfacf0ef6f
+1013	3572	1725590103812754317	CMakeFiles/storage_program.dir/logger/logger/logger_builder.cpp.o	4deb84fd0fa3783
+2648	4713	1725590104955768380	CMakeFiles/storage_program.dir/logger/logger/logger_guardant.cpp.o	a85fe0dfbca512f7
+13	11488	1725590111726851430	CMakeFiles/storage_program.dir/logger/client_logger/client_logger.cpp.o	6e4d00dbd1bf33c4
+15	17115	1725590117341919973	CMakeFiles/storage_program.dir/logger/client_logger/client_logger_builder.cpp.o	76709168af997b72
+10	64148	1725590164319482201	CMakeFiles/storage_program.dir/storage.cpp.o	4244961c2f94ae5c
+64151	64992	1725590165227492877	storage_program	c56b6a04084d14a7

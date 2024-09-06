@@ -10,6 +10,7 @@ private:
     database* db;
     std::string pool, scheme, collection;
     std::string id_lower_bound, id_upper_bound;
+    std::vector<data> result;
 
 public:
     find_data_in_range(database* db, const std::string& pool, const std::string& scheme,
@@ -20,7 +21,12 @@ public:
 
     void execute() override
     {
-        db->find_data_in_range(pool, scheme, collection, id_lower_bound, id_upper_bound);
+        result = db->find_data_in_range(pool, scheme, collection, id_lower_bound, id_upper_bound);
+    }
+
+    std::vector<data> get_result() const
+    {
+        return result;
     }
 };
 

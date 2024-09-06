@@ -67,8 +67,8 @@ public:
     {
         try
         {
-            _logger->trace("ADD POOL: " + pool_name);
             _database->insert(pool_name, pool(_t), insertion_strategy::throw_an_exception);
+            _logger->trace("ADD POOL: " + pool_name);
         }
         catch (const std::exception &e)
         {
@@ -275,6 +275,29 @@ public:
                       << key << " => " << value << std::endl;
         }
     }
+
+    nlohmann::json serialize_tree() const override
+    {
+        nlohmann::json json_tree;
+
+        if (!_database)
+        {
+            std::cout << "Database is not initialized." << std::endl;
+            return json_tree;
+        }
+
+        for (auto it = _database->begin_infix(); it != _database->end_infix(); ++it)
+        {
+            auto [level, index, key, value] = *it;
+            json_tree[key] = value.serialize_to_json();
+        }
+
+        return json_tree;
+    }
+
+
+
+
 };
 
 #endif //B_TREE_DATABASE_H
