@@ -251,31 +251,6 @@ public:
 
 public:
 
-    void print_tree() const override
-    {
-        if (!_database)
-        {
-            std::cout << "Database is not initialized." << std::endl;
-            return;
-        }
-
-        auto it = _database->begin_infix();
-        auto end = _database->end_infix();
-
-        if (it == end)
-        {
-            std::cout << "Tree is empty." << std::endl;
-            return;
-        }
-
-        for (; it != end; ++it)
-        {
-            auto [level, index, key, value] = *it;
-            std::cout << std::string(level * 2, ' ') << "Level " << level << ", Index " << index << ": "
-                      << key << " => " << value << std::endl;
-        }
-    }
-
     nlohmann::json serialize_tree() const override
     {
         nlohmann::json json_tree;

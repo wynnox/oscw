@@ -43,8 +43,6 @@ public:
                   const std::string& id_lower_bound,
                   const std::string& id_upper_bound) const = 0;
 
-    virtual void print_tree() const = 0;
-    // virtual void get_all_data_as_json(nlohmann::json& json_response) const = 0;
     virtual nlohmann::json serialize_tree() const = 0;
 };
 

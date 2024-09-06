@@ -13,13 +13,13 @@
 #include "command/add_pool.h"
 #include "command/add_scheme.h"
 #include "command/find_data_in_range.h"
-#include "command/print.h"
 #include "command/rm_collection.h"
 #include "command/rm_data.h"
 #include "command/rm_pool.h"
 #include "command/rm_scheme.h"
 #include "command/update_data.h"
 #include "data.h"
+#include "database_file_system.h"
 
 using json = nlohmann::json;
 
@@ -157,6 +157,81 @@ public:
             return crow::response(200, std::to_string(load));
         });
 
+       // CROW_ROUTE(app, "/import_data").methods("POST"_method)([this](const crow::request& req)
+       //  {
+       //      std::lock_guard<std::mutex> lock(store_mutex);
+       //
+       //      try {
+       //          auto json_data = nlohmann::json::parse(req.body);
+       //          std::cout << "Received data for import: " << json_data.dump(4) << std::endl;
+       //
+       //          for (const auto& pool_item : json_data.items())
+       //          {
+       //              std::string pool_name = pool_item.key();
+       //              if (pool_name.empty()) {
+       //                  throw std::runtime_error("Invalid pool name");
+       //              }
+       //
+       //
+       //              std::cout << "Adding pool: " << pool_name << std::endl;
+       //              add_pool cmd(_db, pool_name);
+       //              cmd.execute();
+       //              load_pool++;
+       //
+       //              for (const auto& scheme_item : pool_item.value().items())
+       //              {
+       //                  std::string scheme_name = scheme_item.key();
+       //                  if (scheme_name.empty()) {
+       //                      throw std::runtime_error("Invalid scheme name");
+       //                  }
+       //
+       //                  std::cout << "Adding scheme: " << scheme_name << std::endl;
+       //                  add_scheme cmd1(_db, pool_name, scheme_name);
+       //                  cmd1.execute();
+       //                  load_scheme++;
+       //
+       //                  for (const auto& collection_item : scheme_item.value().items())
+       //                  {
+       //                      std::string collection_name = collection_item.key();
+       //                      if (collection_name.empty()) {
+       //                          throw std::runtime_error("Invalid collection name");
+       //                      }
+       //
+       //                      std::cout << "Adding collection: " << collection_name << std::endl;
+       //                      add_collection cmd2(_db, pool_name, scheme_name, collection_name);
+       //                      cmd2.execute();
+       //                      load_collection++;
+       //
+       //                      for (const auto& data_item : collection_item.value().items())
+       //                      {
+       //                          std::string data_id = data_item.key();
+       //                          if (data_id.empty()) {
+       //                              throw std::runtime_error("Invalid data ID");
+       //                          }
+       //
+       //                          json data_value = data_item.value();
+       //                          if (!data_value.is_object()) {
+       //                              throw std::runtime_error("Invalid JSON format for data");
+       //                          }
+       //
+       //                          std::cout << "Adding data: ID = " << data_id << ", value = " << data_value << std::endl;
+       //                          add_data_command cmd4(_db, pool_name, scheme_name, collection_name, data_id, data(data_value));
+       //                          cmd4.execute();
+       //                          load_data++;
+       //                      }
+       //                  }
+       //              }
+       //          }
+       //
+       //          return crow::response(200, "Data imported successfully");
+       //      }
+       //      catch (const std::exception& e)
+       //      {
+       //          std::cerr << "Exception while importing data: " << e.what() << std::endl;
+       //          return crow::response(500, std::string("Error while importing data: ") + e.what());
+       //      }
+       //  });
+
         CROW_ROUTE(app, "/import_data").methods("POST"_method)([this](const crow::request& req)
         {
             std::lock_guard<std::mutex> lock(store_mutex);
@@ -213,6 +288,8 @@ public:
                 return crow::response(500, "Error while importing data");
             }
         });
+
+
 
         app.port(port).run();
     }
@@ -396,10 +473,9 @@ logger *create_logger(
 
 int main(int argc, char* argv[])
 {
-
-    if (argc != 2)
-        {
-        std::cerr << "Usage: " << argv[0] << " <port>" << std::endl;
+    if (argc != 3)
+    {
+        std::cerr << "Usage: " << argv[0] << " <port> <mode: in_memory_cache | file_system>"<< std::endl;
         return 1;
     }
 
@@ -410,7 +486,21 @@ int main(int argc, char* argv[])
         {file, logger::severity::trace}
     });
 
-    database* _database = new b_tree_database(3, logger);
+    database* _database;
+    if(argv[2] == std::string("in_memory_cache"))
+    {
+        _database = new b_tree_database(3, logger);
+    }
+    else if(argv[2] == std::string("file_system"))
+    {
+        std::string db_path = "server_db_" + std::to_string(port);
+        _database = new file_system_database(db_path, logger);
+    }
+    else
+    {
+        std::cout << "я больной";
+        return 0;
+    }
 
     StorageServer server(_database);
 

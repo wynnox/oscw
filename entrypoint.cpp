@@ -21,18 +21,22 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s)
     return new_length;
 }
 
+enum class mode
+{
+    in_memory_cache,
+    file_system
+};
+
 class EntryPointServer
 {
     std::unordered_map<std::string, std::string> pool_to_server;
     std::vector<std::string> storage_servers;
     std::mutex servers_mutex;
     int next_port = 8081;
+    enum::mode _mode;
 
 public:
-    EntryPointServer()
-    {
-        // storage_servers.push_back("http://127.0.0.1:8081");
-    }
+    EntryPointServer(enum::mode modee): _mode(modee) {}
 
     void run()
     {
@@ -129,7 +133,6 @@ private:
             {
                 method = "DELETE";
                 url = server_url + "/pool/" + pool;
-                //TODO
                 pool_to_server.erase(pool);
                 response_code = 204;
             }
@@ -300,7 +303,18 @@ private:
 
     void start_storage_server(int port)
     {
-        std::string command = "/home/nncl/oscw/build/storage_program " + std::to_string(port) + " &";
+        std::string mode_str;
+
+        if (_mode == mode::in_memory_cache)
+        {
+            mode_str = "in_memory_cache";
+        }
+        else if (_mode == mode::file_system)
+        {
+            mode_str = "file_system";
+        }
+
+        std::string command = "/home/nncl/oscw/build/storage_program " + std::to_string(port) + " " + mode_str + " &";
         system(command.c_str());
 
 
@@ -473,8 +487,32 @@ private:
 
 };
 
-int main() {
-    EntryPointServer server;
+int main(int argc, char* argv[])
+{
+    if(argc != 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " <mode: in_memory_cache | file_system>" << std::endl;
+        return 1;
+    }
+
+    std::string mode_str = argv[1];
+    enum::mode selected_mode;
+
+    if (mode_str == "in_memory_cache")
+    {
+        selected_mode = mode::in_memory_cache;
+    }
+    else if (mode_str == "file_system")
+    {
+        selected_mode = mode::file_system;
+    }
+    else
+    {
+        std::cerr << "Invalid mode specified. Use 'in_memory_cache' or 'file_system'." << std::endl;
+        return 1;
+    }
+
+    EntryPointServer server(selected_mode);
     server.run();
 
     return 0;
