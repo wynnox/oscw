@@ -169,91 +169,95 @@ public:
         });
 
 
-        CROW_ROUTE(app, "/import_data").methods("POST"_method)([this](const crow::request& req)
+CROW_ROUTE(app, "/import_data").methods("POST"_method)([this](const crow::request& req)
+{
+    std::lock_guard<std::mutex> lock(store_mutex);
+
+    std::cout << "Received raw request body: " << req.body << std::endl; // Лог запроса
+
+    try {
+        auto json_data = nlohmann::json::parse(req.body);
+        std::cout << "Parsed JSON: " << json_data.dump(4) << std::endl;
+
+        if (!json_data.is_object()) {
+            std::cerr << "Error: JSON is not an object" << std::endl;
+            return crow::response(400, "Invalid JSON structure for pools");
+        }
+
+        for (const auto& pool_item : json_data.items())
         {
-            std::lock_guard<std::mutex> lock(store_mutex);
+            std::string pool_name = pool_item.key();
+            auto pool_value = pool_item.value();
+            std::cout << "Processing pool: " << pool_name << std::endl;
 
-            nlohmann::json json_response = _db->serialize_tree();
-            std::cout << "dataaaa" << json_response.dump(4) << std::endl;
-
-            try {
-                auto json_data = nlohmann::json::parse(req.body);
-                std::cout << "Received data for import: " << json_data.dump(4) << std::endl;
-
-                if (!json_data.is_object())
-                {
-                    return crow::response(400, "Invalid JSON structure for pools");
-                }
-
-                for (const auto& pool_item : json_data.items())
-                {
-                    std::string pool_name = pool_item.key();
-                    auto pool_value = pool_item.value();
-                    std::cout << "Processing pool: " << pool_name << std::endl;
-
-                    if (!pool_value.is_object())
-                    {
-                        return crow::response(400, "Invalid JSON structure: Expected a JSON object for pool " + pool_name);
-                    }
-
-                    add_pool cmd(_db, pool_name);
-                    cmd.execute();
-                    load_pool++;
-
-                    for (const auto& scheme_item : pool_item.value().items())
-                    {
-                        std::string scheme_name = scheme_item.key();
-                        auto scheme_value = scheme_item.value();
-                        std::cout << "Processing scheme: " << scheme_name << " in pool: " << pool_name << std::endl;  // Лог перед добавлением схемы
-
-                        if (!scheme_value.is_object())
-                        {
-                            return crow::response(400, "Invalid JSON structure: Expected a JSON object for scheme " + scheme_name);
-                        }
-
-                        add_scheme cmd1(_db, pool_name, scheme_name);
-                        cmd1.execute();
-
-                        for (const auto& collection_item : scheme_item.value().items())
-                        {
-                            std::string collection_name = collection_item.key();
-                            auto collection_value = collection_item.value();
-                            std::cout << "Processing collection: " << collection_name << " in scheme: " << scheme_name << std::endl;  // Лог перед добавлением коллекции
-
-                            if (!collection_value.is_object())
-                            {
-                                return crow::response(400, "Invalid JSON structure: Expected a JSON object for collection " + collection_name);
-                            }
-
-                            add_collection cmd2(_db, pool_name, scheme_name, collection_name);
-                            cmd2.execute();
-
-                            for (const auto& data_item : collection_item.value().items())
-                            {
-                                std::string data_id = data_item.key();
-                                json data_value = data_item.value();
-                                std::cout << "Processing data: ID = " << data_id << " in collection: " << collection_name << std::endl;  // Лог перед добавлением данных
-
-                                if (!data_value.is_object())
-                                {
-                                    return crow::response(400, "Invalid JSON structure: Expected a JSON object for data with ID " + data_id);
-                                }
-
-                                add_data_command cmd4(_db, pool_name, scheme_name, collection_name, data_id, data(data_value));
-                                cmd4.execute();
-                            }
-                        }
-                    }
-                }
-
-                return crow::response(200, "Data imported successfully");
+            if (!pool_value.is_object()) {
+                std::cerr << "Error: Pool is not an object" << std::endl;
+                return crow::response(400, "Invalid JSON structure for pool " + pool_name);
             }
-            catch (const std::exception& e)
+
+            add_pool cmd(_db, pool_name);
+            cmd.execute();
+            load_pool++;
+
+            for (const auto& scheme_item : pool_item.value().items())
             {
-                std::cerr << "Exception while importing data: " << e.what() << std::endl;
-                return crow::response(500, "Error while importing data");
+                std::string scheme_name = scheme_item.key();
+                auto scheme_value = scheme_item.value();
+                std::cout << "Processing scheme: " << scheme_name << " in pool: " << pool_name << std::endl;
+
+                if (!scheme_value.is_object()) {
+                    std::cerr << "Error: Scheme is not an object" << std::endl;
+                    return crow::response(400, "Invalid JSON structure: Expected a JSON object for scheme " + scheme_name);
+                }
+
+                add_scheme cmd1(_db, pool_name, scheme_name);
+                cmd1.execute();
+
+                for (const auto& collection_item : scheme_item.value().items())
+                {
+                    std::string collection_name = collection_item.key();
+                    auto collection_value = collection_item.value();
+                    std::cout << "Processing collection: " << collection_name << " in scheme: " << scheme_name << std::endl;
+
+                    if (!collection_value.is_object()) {
+                        std::cerr << "Error: Collection is not an object" << std::endl;
+                        return crow::response(400, "Invalid JSON structure: Expected a JSON object for collection " + collection_name);
+                    }
+
+                    add_collection cmd2(_db, pool_name, scheme_name, collection_name);
+                    cmd2.execute();
+
+                    for (const auto& data_item : collection_item.value().items())
+                    {
+                        std::string data_id = data_item.key();
+                        json data_value = data_item.value();
+                        std::cout << "Processing data: ID = " << data_id << " in collection: " << collection_name << std::endl;
+
+                        if (!data_value.is_object()) {
+                            std::cerr << "Error: Data is not an object" << std::endl;
+                            return crow::response(400, "Invalid JSON structure: Expected a JSON object for data with ID " + data_id);
+                        }
+
+                        try {
+                            add_data_command cmd4(_db, pool_name, scheme_name, collection_name, data_id, data(data_value));
+                            cmd4.execute();
+                        } catch (const std::exception& e) {
+                            std::cerr << "Error adding data: " << e.what() << std::endl;
+                            return crow::response(500, "Error adding data: " + std::string(e.what()));
+                        }
+                    }
+                }
             }
-        });
+        }
+
+        return crow::response(200, "Data imported successfully");
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Exception while importing data: " << e.what() << std::endl;
+        return crow::response(500, "Error while importing data");
+    }
+});
+
 
 
 
@@ -343,6 +347,11 @@ private:
                                         const std::string& id,
                                         const nlohmann::json& j)
     {
+        if (!j.is_object())
+            {
+            return crow::response(400, "Invalid JSON structure: Expected object for data");
+        }
+
         std::lock_guard<std::mutex> lock(store_mutex);
 
         add_data_command cmd(_db, pool, scheme, collection, id, data(j));

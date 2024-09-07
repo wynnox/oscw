@@ -14,12 +14,14 @@ public:
 
     data(const nlohmann::json& j)
     {
+        std::cout << "Received JSON for data: " << j.dump(4) << std::endl;  // Лог данных перед парсингом
         if (!j.is_array() || j.size() != 2)
         {
             throw std::logic_error("Invalid JSON format for data");
         }
         first_name = j.at(0).get<std::string>();
         last_name = j.at(1).get<std::string>();
+        std::cout << "Parsed data: " << first_name << " " << last_name << std::endl;
     }
 
     nlohmann::json to_json() const

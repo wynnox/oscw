@@ -282,7 +282,6 @@ nlohmann::json serialize_tree() const override
     nlohmann::json tree_json;
     std::filesystem::path path = _database;
 
-    // Проходим по всем пулам
     for (const auto& pool_entry : std::filesystem::directory_iterator(path))
     {
         if (std::filesystem::is_directory(pool_entry))
@@ -308,7 +307,7 @@ nlohmann::json serialize_tree() const override
                             {
                                 if (std::filesystem::is_regular_file(data_entry))
                                 {
-                                    std::string data_id = data_entry.path().filename().stem().string(); // Убираем ".json"
+                                    std::string data_id = data_entry.path().filename().stem().string();
                                     std::ifstream file(data_entry.path());
 
                                     nlohmann::json data_json;
