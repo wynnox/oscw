@@ -1,6 +1,7 @@
-07.09.2024 12:47:56 TRACE CREATE B_TREE DATABASE
-07.09.2024 12:48:01 TRACE Attempting to insert pool with key: oooo
-07.09.2024 12:48:01 TRACE Pool added successfully with key: oooo
-07.09.2024 12:48:01 TRACE ADD SCHEME: oooo/qqqqqqqqq
-07.09.2024 12:48:01 TRACE ADD COLLECTION: oooo/qqqqqqqqq/qw
-07.09.2024 12:48:01 TRACE DELETE B_TREE DATABASE
+07.09.2024 12:57:09 TRACE CREATE B_TREE DATABASE
+07.09.2024 12:57:14 TRACE Attempting to insert pool with key: oooo
+07.09.2024 12:57:14 TRACE Pool added successfully with key: oooo
+07.09.2024 12:57:14 TRACE ADD SCHEME: oooo/qqqqqqqqq
+07.09.2024 12:57:14 TRACE ADD COLLECTION: oooo/qqqqqqqqq/qw
+07.09.2024 12:57:14 TRACE ADD DATA: oooo/qqqqqqqqq/qw/6
+07.09.2024 12:57:14 TRACE DELETE B_TREE DATABASE
