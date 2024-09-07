@@ -21,3 +21,13 @@
 15	17115	1725590117341919973	CMakeFiles/storage_program.dir/logger/client_logger/client_logger_builder.cpp.o	76709168af997b72
 10	64148	1725590164319482201	CMakeFiles/storage_program.dir/storage.cpp.o	4244961c2f94ae5c
 64151	64992	1725590165227492877	storage_program	c56b6a04084d14a7
+22	544	1725662740589962644	CMakeFiles/entrypoint_program.dir/allocator/allocator/allocator_guardant.cpp.o	f016cd4d0bc48e6f
+25	1308	1725662741355964248	CMakeFiles/entrypoint_program.dir/allocator/allocator/allocator_test_utils.cpp.o	48e2e09c8bdea4e5
+30	3497	1725662743537968812	CMakeFiles/entrypoint_program.dir/allocator/allocator_global_heap/allocator_global_heap.cpp.o	ab85cb585e8d15e1
+545	4124	1725662744169970134	CMakeFiles/entrypoint_program.dir/logger/logger/logger.cpp.o	38fa2f3fa21fb8b9
+1308	4672	1725662744717971279	CMakeFiles/entrypoint_program.dir/logger/logger/logger_builder.cpp.o	1d01460143dfd9df
+3497	6681	1725662746727975475	CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o	c093f4139969b47b
+32	15813	1725662755852994462	CMakeFiles/entrypoint_program.dir/logger/client_logger/client_logger.cpp.o	9cbff8c395d519c5
+42	22382	1725662762418008047	CMakeFiles/entrypoint_program.dir/logger/client_logger/client_logger_builder.cpp.o	34ced9cc915c6292
+21	58804	1725662798791082338	CMakeFiles/entrypoint_program.dir/entrypoint.cpp.o	c1f9a0ccc4897c96
+58804	59880	1725662799919084617	entrypoint_program	530dd818c0f553a5

@@ -98,6 +98,15 @@ protected:
 
         return json_container;
     }
+
+public:
+    auto begin_infix() const {
+        return _container->begin_infix();
+    }
+
+    auto end_infix() const {
+        return _container->end_infix();
+    }
 };
 
 

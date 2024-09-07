@@ -220,6 +220,7 @@ typename b_tree<tkey, tvalue>::infix_iterator &b_tree<tkey, tvalue>::infix_itera
     if (_path.empty())
     {
         // TODO: undefined behavior
+        throw std::logic_error("pupupu");
 
         return *this;
     }
@@ -465,22 +466,21 @@ tvalue const &b_tree<tkey, tvalue>::obtain(
 template<
     typename tkey,
     typename tvalue>
-tvalue b_tree<tkey, tvalue>::dispose(
-    const tkey &key)
+tvalue b_tree<tkey, tvalue>::dispose(const tkey &key)
 {
     auto path = this->find_path(key);
     if (path.top().second < 0)
     {
-        throw std::logic_error("key not found");
+        throw std::logic_error("Ключ не найден");
     }
 
+    // Обработка для узлов с поддеревьями
     if ((*path.top().first)->subtrees[0] != nullptr)
     {
         auto non_terminal_node_with_key_found_info = path.top();
         path.pop();
         typename search_tree<tkey, tvalue>::common_node **iterator = non_terminal_node_with_key_found_info.first;
 
-        // TODO: configure this for min of right subtree
         while (*iterator != nullptr)
         {
             auto index = *iterator == *non_terminal_node_with_key_found_info.first
@@ -488,11 +488,11 @@ tvalue b_tree<tkey, tvalue>::dispose(
                 : (*iterator)->virtual_size;
 
             path.push(std::make_pair(iterator, -index - 1));
-
             iterator = (*iterator)->subtrees + index;
         }
 
-        search_tree<tkey, tvalue>::swap(std::move((*non_terminal_node_with_key_found_info.first)->keys_and_values[non_terminal_node_with_key_found_info.second]), std::move((*path.top().first)->keys_and_values[(*path.top().first)->virtual_size - 1]));
+        search_tree<tkey, tvalue>::swap(std::move((*non_terminal_node_with_key_found_info.first)->keys_and_values[non_terminal_node_with_key_found_info.second]),
+            std::move((*path.top().first)->keys_and_values[(*path.top().first)->virtual_size - 1]));
         path.top().second = -path.top().second - 2;
     }
 
@@ -509,6 +509,7 @@ tvalue b_tree<tkey, tvalue>::dispose(
 
     allocator::destruct(target_node->keys_and_values + target_node->virtual_size);
 
+    // Проверка на корректность узлов
     while (true)
     {
         if (target_node->virtual_size >= get_min_keys_count())
@@ -523,7 +524,6 @@ tvalue b_tree<tkey, tvalue>::dispose(
                 this->_root = target_node->subtrees[0];
                 this->destroy_node(target_node);
             }
-
             return value;
         }
 
@@ -531,13 +531,13 @@ tvalue b_tree<tkey, tvalue>::dispose(
         size_t position = -path.top().second - 1;
         path.pop();
 
-        bool const left_brother_exists = position != 0;
-        bool const can_take_from_left_brother =
+        bool left_brother_exists = position != 0;
+        bool can_take_from_left_brother =
             left_brother_exists &&
             parent->subtrees[position - 1]->virtual_size > get_min_keys_count();
 
-        bool const right_brother_exists = position != parent->virtual_size;
-        bool const can_take_from_right_brother =
+        bool right_brother_exists = position != parent->virtual_size;
+        bool can_take_from_right_brother =
             right_brother_exists &&
             parent->subtrees[position + 1]->virtual_size > get_min_keys_count();
 
@@ -552,9 +552,7 @@ tvalue b_tree<tkey, tvalue>::dispose(
 
             for (auto i = target_node->virtual_size - 1; i > 0; --i)
             {
-                search_tree<tkey, tvalue>::swap(std::move(target_node->keys_and_values[i]),
-                     std::move(target_node->keys_and_values[i - 1]));
-
+                search_tree<tkey, tvalue>::swap(std::move(target_node->keys_and_values[i]), std::move(target_node->keys_and_values[i - 1]));
                 search_tree<tkey, tvalue>::swap(std::move(target_node->subtrees[i + 1]), std::move(target_node->subtrees[i]));
             }
 
@@ -574,7 +572,6 @@ tvalue b_tree<tkey, tvalue>::dispose(
             for (size_t i = 0; i < right_brother->virtual_size - 1; ++i)
             {
                 search_tree<tkey, tvalue>::swap(std::move(right_brother->keys_and_values[i]), std::move(right_brother->keys_and_values[i + 1]));
-
                 search_tree<tkey, tvalue>::swap(std::move(right_brother->subtrees[i]), std::move(right_brother->subtrees[i + 1]));
             }
 
@@ -585,13 +582,13 @@ tvalue b_tree<tkey, tvalue>::dispose(
             return value;
         }
 
-        this->merge_nodes(parent, position - (left_brother_exists
-            ? 1
-            : 0));
+        this->merge_nodes(parent, position - (left_brother_exists ? 1 : 0));
 
         target_node = parent;
     }
+
 }
+
 
 template<
     typename tkey,

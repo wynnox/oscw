@@ -16,6 +16,7 @@ private:
     std::string _database;
     logger* _logger;
     mutable data cached_data;
+    server_type _server_type;
 
     std::string build_path(const std::string& pool_name = "",
                            const std::string& scheme_name = "",
@@ -39,17 +40,27 @@ private:
     }
 
 public:
-    explicit file_system_database(std::string database_path, logger* logger) : _database("../" + database_path), _logger(logger)
+    explicit file_system_database(std::string database_path, logger* logger)
+        : _database("../" + database_path), _logger(logger), _server_type(server_type::file_system) // Инициализация типа сервера
     {
         if (!std::filesystem::exists(_database))
         {
             std::filesystem::create_directory(_database);
         }
-        _logger->trace("CREATE B_TREE DATABASE");
-
+        _logger->trace("CREATE FILE SYSTEM DATABASE");
     }
 
     ~file_system_database() override = default;
+
+    server_type get_server_type() const override
+    {
+        return _server_type;
+    }
+
+    std::string get_database_path() const
+    {
+        return _database;
+    }
 
 public:
     void add_pool(const std::string& pool_name) override
@@ -266,27 +277,62 @@ public:
         return result;
     }
 
-    nlohmann::json serialize_tree() const override
+nlohmann::json serialize_tree() const override
+{
+    nlohmann::json tree_json;
+    std::filesystem::path path = _database;
+
+    // Проходим по всем пулам
+    for (const auto& pool_entry : std::filesystem::directory_iterator(path))
     {
-        nlohmann::json tree_json;
-        std::filesystem::path path = _database;
-
-        for (const auto& entry : std::filesystem::recursive_directory_iterator(path))
+        if (std::filesystem::is_directory(pool_entry))
         {
-            if (std::filesystem::is_regular_file(entry))
-            {
-                std::string relative_path = std::filesystem::relative(entry.path(), path).string();
-                tree_json[relative_path] = "file";
-            }
-            else if (std::filesystem::is_directory(entry))
-            {
-                std::string relative_path = std::filesystem::relative(entry.path(), path).string();
-                tree_json[relative_path] = "directory";
-            }
-        }
+            std::string pool_name = pool_entry.path().filename().string();
+            nlohmann::json pool_json;
 
-        return tree_json;
+            for (const auto& scheme_entry : std::filesystem::directory_iterator(pool_entry))
+            {
+                if (std::filesystem::is_directory(scheme_entry))
+                {
+                    std::string scheme_name = scheme_entry.path().filename().string();
+                    nlohmann::json scheme_json;
+
+                    for (const auto& collection_entry : std::filesystem::directory_iterator(scheme_entry))
+                    {
+                        if (std::filesystem::is_directory(collection_entry))
+                        {
+                            std::string collection_name = collection_entry.path().filename().string();
+                            nlohmann::json collection_json;
+
+                            for (const auto& data_entry : std::filesystem::directory_iterator(collection_entry))
+                            {
+                                if (std::filesystem::is_regular_file(data_entry))
+                                {
+                                    std::string data_id = data_entry.path().filename().stem().string(); // Убираем ".json"
+                                    std::ifstream file(data_entry.path());
+
+                                    nlohmann::json data_json;
+                                    file >> data_json;
+                                    collection_json[data_id] = data_json;
+                                }
+                            }
+
+                            scheme_json[collection_name] = collection_json;
+                        }
+                    }
+
+                    pool_json[scheme_name] = scheme_json;
+                }
+            }
+
+            tree_json[pool_name] = pool_json;
+        }
     }
+
+    return tree_json;
+}
+    bool pool_exists(const std::string& pool_name) const {return true;}
+
 };
 
 #endif //FILE_SYSTEM_DATABASE_H

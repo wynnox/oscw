@@ -1,0 +1,14 @@
+07.09.2024 07:35:52 TRACE CREATE B_TREE DATABASE
+07.09.2024 07:36:02 TRACE Attempting to insert pool with key: notdata
+07.09.2024 07:36:02 TRACE Pool added successfully with key: notdata
+07.09.2024 07:36:02 TRACE ADD SCHEME: notdata/b
+07.09.2024 07:36:02 TRACE ADD COLLECTION: notdata/b/b
+07.09.2024 07:36:02 TRACE ADD DATA: notdata/b/b/2
+07.09.2024 07:36:02 TRACE FIND DATA: notdata/b/b/2
+07.09.2024 07:36:27 TRACE Attempting to insert pool with key: data
+07.09.2024 07:36:27 TRACE Pool added successfully with key: data
+07.09.2024 07:36:27 TRACE ADD SCHEME: data/a
+07.09.2024 07:36:27 TRACE ADD COLLECTION: data/a/a
+07.09.2024 07:36:37 TRACE Attempting to insert pool with key: opo
+07.09.2024 07:36:37 TRACE ADD SCHEME: opo/popo
+07.09.2024 07:36:37 TRACE ADD COLLECTION: opo/popo/plpl

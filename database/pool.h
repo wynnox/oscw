@@ -11,6 +11,8 @@ class pool final : public container<std::string, scheme>
 public:
     explicit pool(size_t t) : container(t) {}
 
+    virtual ~pool() {}
+
     void add_scheme(const std::string& scheme_name, const scheme& sch)
     {
         add_item(scheme_name, sch);

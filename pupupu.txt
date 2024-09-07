@@ -1,2 +1,68 @@
 ADD_STORAGE
-ADD_POOL qdqd
+ADD_POOL data_pool
+ADD_SCHEME data_pool student_scheme
+ADD_COLLECTION data_pool student_scheme group_a
+ADD_COLLECTION data_pool student_scheme group_b
+ADD_DATA data_pool student_scheme group_a 1 John Doe
+ADD_DATA data_pool student_scheme group_a 2 Jane Smith
+ADD_DATA data_pool student_scheme group_b 3 Emily Jones
+FIND_DATA data_pool student_scheme group_b 3
+ADD_POOL iloveyou
+ADD_SCHEME iloveyou qqqqqqqqq
+ADD_COLLECTION iloveyou qqqqqqqqq qw
+ADD_DATA iloveyou qqqqqqqqq qw 6 lol lololo
+ADD_STORAGE
+ADD_DATA data_pool student_scheme group_b 4 Michael Brown
+UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
+FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
+REMOVE_STORAGE
+ADD_STORAGE
+ADD_STORAGE
+ADD_STORAGE
+ADD_POOL data
+ADD_POOL notdata
+ADD_POOL eeeeeedata
+ADD_SCHEME data a
+ADD_SCHEME notdata b
+ADD_SCHEME eeeeeedata c
+ADD_COLLECTION data a a
+ADD_COLLECTION notdata b b
+ADD_COLLECTION eeeeeedata c c
+ADD_DATA data a a 1 q q
+ADD_DATA notdata b b 2 e e
+ADD_DATA eeeeeedata c c 3 h h
+FIND_DATA data a a 1
+FIND_DATA notdata b b 2
+FIND_DATA eeeeeedata c c 3
+ADD_STORAGE
+ADD_POOL data_pool
+ADD_SCHEME data_pool student_scheme
+ADD_COLLECTION data_pool student_scheme group_a
+ADD_COLLECTION data_pool student_scheme group_b
+ADD_DATA data_pool student_scheme group_a 1 John Doe
+ADD_DATA data_pool student_scheme group_a 2 Jane Smith
+ADD_DATA data_pool student_scheme group_b 3 Emily Jones
+FIND_DATA data_pool student_scheme group_b 3
+ADD_POOL iloveyou
+ADD_SCHEME iloveyou qqqqqqqqq
+ADD_COLLECTION iloveyou qqqqqqqqq qw
+ADD_DATA iloveyou qqqqqqqqq qw 6 lol lololo
+ADD_STORAGE
+ADD_STORAGE
+ADD_POOL jkwhi
+ADD_SCHEME jkwhi iiiii
+ADD_COLLECTION jkwhi iiiii ooooo
+ADD_DATA jkwhi iiiii ooooo 7 rrrrr rrrt
+ADD_DATA data_pool student_scheme group_b 4 Michael Brown
+UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
+FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
+REMOVE_STORAGE
+ADD_POOL opo
+ADD_SCHEME opo popo
+ADD_COLLECTION opo popo plpl
+ADD_DATA opo popo plpl 98 hhh huhuhu
+ADD_DATA jkwhi iiiii ooooo 7 y h
+FIND_DATA jkwhi iiiii ooooo 7
+REMOVE_STORAGE
+REMOVE_STORAGE
+REMOVE_STORAGE

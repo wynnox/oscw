@@ -12,11 +12,13 @@ class b_tree_database: public database
 private:
     b_tree<std::string, pool>* _database;
     size_t _t;
+    server_type _server_type;
 
     logger* _logger;
 
 public:
-    explicit b_tree_database(size_t t, logger* logger) : _t(t), _logger(logger)
+    explicit b_tree_database(size_t t, logger* logger)
+        : _t(t), _logger(logger), _server_type(server_type::in_memory_cache)
     {
         _database = new b_tree<std::string, pool>(_t);
         _logger->trace("CREATE B_TREE DATABASE");
@@ -26,6 +28,11 @@ public:
     {
         _logger->trace("DELETE B_TREE DATABASE");
         delete _database;
+    }
+
+    server_type get_server_type() const override
+    {
+        return _server_type;
     }
 
     b_tree_database(const b_tree_database& other) : _t(other._t)
@@ -67,8 +74,9 @@ public:
     {
         try
         {
+            _logger->trace("Attempting to insert pool with key: " + pool_name);
             _database->insert(pool_name, pool(_t), insertion_strategy::throw_an_exception);
-            _logger->trace("ADD POOL: " + pool_name);
+            _logger->trace("Pool added successfully with key: " + pool_name);
         }
         catch (const std::exception &e)
         {
@@ -255,22 +263,67 @@ public:
     {
         nlohmann::json json_tree;
 
-        if (!_database)
-        {
+        if (!_database) {
             std::cout << "Database is not initialized." << std::endl;
             return json_tree;
         }
 
-        for (auto it = _database->begin_infix(); it != _database->end_infix(); ++it)
-        {
-            auto [level, index, key, value] = *it;
-            json_tree[key] = value.serialize_to_json();
+        for (auto it = _database->begin_infix(); it != _database->end_infix(); ++it) {
+            auto [level, index, pool_name, pool_value] = *it;
+
+            const container<std::string, scheme>& pool_container = pool_value;
+
+            nlohmann::json pool_json;
+
+            for (auto scheme_it = pool_container.begin_infix(); scheme_it != pool_container.end_infix(); ++scheme_it) {
+                auto [scheme_level, scheme_index, scheme_name, scheme_value] = *scheme_it;
+
+                const container<std::string, collection>& scheme_container = scheme_value;
+
+                nlohmann::json scheme_json;
+
+                for (auto collection_it = scheme_container.begin_infix(); collection_it != scheme_container.end_infix(); ++collection_it) {
+                    auto [collection_level, collection_index, collection_name, collection_value] = *collection_it;
+
+                    const container<std::string, data>& collection_container = collection_value;
+
+                    nlohmann::json collection_json;
+
+                    for (auto data_it = collection_container.begin_infix(); data_it != collection_container.end_infix(); ++data_it) {
+                        auto [data_level, data_index, data_id, data_value] = *data_it;
+
+                        collection_json[data_id] = data_value.to_json();
+                    }
+
+                    scheme_json[collection_name] = collection_json;
+                }
+
+                pool_json[scheme_name] = scheme_json;
+            }
+
+            json_tree[pool_name] = pool_json;
         }
 
+        std::cout << "nlohmann::json serialize_tree() const override :" << json_tree << std::endl;
         return json_tree;
     }
 
 
+
+
+public:
+    bool pool_exists(const std::string& pool_name) const
+    {
+        try
+        {
+            _database->obtain(pool_name);
+            return true;
+        }
+        catch (const std::exception& e)
+        {
+            return false;
+        }
+    }
 
 
 };

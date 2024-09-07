@@ -11,6 +11,8 @@ class collection final : public container<std::string, data>
 public:
     explicit collection(size_t t) : container(t) {}
 
+    virtual ~collection() {}
+
     void add_data(const std::string& key, const data& value)
     {
         add_item(key, value);
@@ -51,12 +53,12 @@ public:
 
     nlohmann::json serialize_to_json() const
     {
-        return container::serialize_to_json();  // Use container's serialization
+        return container::serialize_to_json();
     }
 
     nlohmann::json to_json() const
     {
-        return serialize_to_json();  // Используем существующую функцию сериализации
+        return serialize_to_json();
     }
 };
 

@@ -11,6 +11,8 @@ class scheme final : public container<std::string, collection>
 public:
     explicit scheme(size_t t) : container(t) {}
 
+    virtual ~scheme() {}
+
     void add_collection(const std::string& collection_name, const collection& coll)
     {
         add_item(collection_name, coll);
@@ -34,12 +36,12 @@ public:
 
     nlohmann::json serialize_to_json() const
     {
-        return container::serialize_to_json();  // Use container's serialization
+        return container::serialize_to_json();
     }
 
     nlohmann::json to_json() const
     {
-        return serialize_to_json();  // Используем существующую функцию сериализации
+        return serialize_to_json();
     }
 };
 

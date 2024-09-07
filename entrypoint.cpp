@@ -50,11 +50,13 @@ public:
 
         CROW_ROUTE(app, "/add_storage").methods("POST"_method)([this](const crow::request& req)
         {
+            print_all_data_from_servers();
             return add_storage_server();
         });
 
         CROW_ROUTE(app, "/remove_storage").methods("POST"_method)([this]()
         {
+            print_all_data_from_servers();
             return remove_storage_server();
         });
 
@@ -113,6 +115,11 @@ private:
 
         if (tokens[0] == "ADD_POOL")
         {
+            if (pool_to_server.find(pool) != pool_to_server.end())
+            {
+                return crow::response(400, "Pool already exists: " + pool);  // Если существует, возвращаем ошибку
+            }
+
             method = "POST";
             server_url = get_least_loaded_server_url();
             url = server_url + "/pool";
@@ -370,8 +377,13 @@ private:
 
         std::string all_data_url = server_to_remove + "/all_data";
         std::string all_data_json = send_request_to_storage("", all_data_url, "GET");
-        std::cout << "Данные с удаляемого сервера: " << all_data_json <<std::endl;
 
+        if (all_data_json.empty())
+        {
+            return crow::response(500, "Error retrieving data from server");
+        }
+
+        std::cout << "Data from the server to be removed: " << all_data_json << std::endl;
 
         auto it = std::find(storage_servers.begin(), storage_servers.end(), server_to_remove);
         if (it != storage_servers.end())
@@ -392,12 +404,23 @@ private:
 
         std::string add_data_url = target_server_url + "/import_data";
         std::string result = send_request_to_storage(all_data_json, add_data_url, "POST");
-        std::cout << "Результат импорта данных на сервер с минимальной нагрузкой: " << result << std::endl;
 
+        if (result != "Data imported successfully")
+        {
+            return crow::response(500, "Error importing data to the least loaded server");
+        }
+
+        std::cout << "Result of importing data to the least loaded server: " << result << std::endl;
 
         try
         {
             json imported_data = json::parse(all_data_json);
+
+            if (!imported_data.is_object())
+            {
+                return crow::response(400, "Invalid data format during pool update");
+            }
+
             for (auto& pool_item : imported_data.items())
             {
                 std::string pool_name = pool_item.key();
@@ -462,28 +485,6 @@ private:
         return least_loaded_server_index;
     }
 
-    crow::response handle_add_pool(const std::string& pool)
-    {
-        std::lock_guard<std::mutex> lock(servers_mutex);
-
-        if (pool_to_server.find(pool) != pool_to_server.end())
-        {
-            return crow::response(400, "Pool already exists");
-        }
-
-        size_t server_index = get_least_loaded_server();
-        std::string server_url = storage_servers[server_index];
-
-        nlohmann::json command_json;
-        command_json["pool"] = pool;
-        std::string json_command = command_json.dump();
-
-        std::string response = send_request_to_storage(json_command, server_url + "/pool", "POST");
-
-        pool_to_server[pool] = server_url;
-
-        return crow::response(201, "Pool added successfully");
-    }
 
 };
 

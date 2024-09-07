@@ -1,22 +1,19 @@
-07.09.2024 01:09:37 TRACE CREATE B_TREE DATABASE
-07.09.2024 01:09:42 TRACE ADD POOL: data_pool1
-07.09.2024 01:09:42 TRACE ADD SCHEME: qdqd/qqqqqqqqq
-07.09.2024 01:09:42 TRACE ADD COLLECTION: qdqd/qqqqqqqqq/qw
-07.09.2024 01:09:42 TRACE ADD DATA: qdqd/qqqqqqqqq/qw/6
-07.09.2024 01:09:42 TRACE ADD SCHEME: data_pool1/student_scheme
-07.09.2024 01:09:42 TRACE ADD COLLECTION: data_pool1/student_scheme/group_a
-07.09.2024 01:09:42 TRACE ADD COLLECTION: data_pool1/student_scheme/group_b
-07.09.2024 01:09:47 TRACE ADD DATA: data_pool1/student_scheme/group_a/1
-07.09.2024 01:09:47 TRACE ADD DATA: data_pool1/student_scheme/group_a/2
-07.09.2024 01:09:47 TRACE ADD DATA: data_pool1/student_scheme/group_b/3
-07.09.2024 01:09:47 TRACE FIND DATA: data_pool1/student_scheme/group_b/3
-07.09.2024 01:09:52 TRACE ADD DATA: data_pool1/student_scheme/group_b/4
-07.09.2024 01:09:52 TRACE UPDATE DATA: data_pool1/student_scheme/group_b/3
-07.09.2024 01:09:52 TRACE FIND DATA IN RANGE: data_pool1/student_scheme/group_b/3 4
-07.09.2024 01:10:02 TRACE ADD SCHEME: jkwhi/iiiii
-07.09.2024 01:10:02 TRACE ADD COLLECTION: jkwhi/iiiii/ooooo
-07.09.2024 01:10:02 TRACE ADD DATA: jkwhi/iiiii/ooooo/7
-07.09.2024 01:10:02 TRACE ADD SCHEME: jkwhi/popo
-07.09.2024 01:10:02 TRACE ADD COLLECTION: jkwhi/popo/plpl
-07.09.2024 01:10:02 TRACE ADD DATA: jkwhi/popo/plpl/98
-07.09.2024 01:13:07 TRACE DELETE B_TREE DATABASE
+07.09.2024 07:35:32 TRACE CREATE B_TREE DATABASE
+07.09.2024 07:35:37 TRACE Attempting to insert pool with key: data_pool
+07.09.2024 07:35:37 TRACE Pool added successfully with key: data_pool
+07.09.2024 07:35:37 TRACE ADD SCHEME: data_pool/student_scheme
+07.09.2024 07:35:37 TRACE ADD COLLECTION: data_pool/student_scheme/group_a
+07.09.2024 07:35:37 TRACE ADD COLLECTION: data_pool/student_scheme/group_b
+07.09.2024 07:35:37 TRACE ADD DATA: data_pool/student_scheme/group_a/1
+07.09.2024 07:35:37 TRACE ADD DATA: data_pool/student_scheme/group_a/2
+07.09.2024 07:35:37 TRACE ADD DATA: data_pool/student_scheme/group_b/3
+07.09.2024 07:35:37 TRACE FIND DATA: data_pool/student_scheme/group_b/3
+07.09.2024 07:35:37 TRACE ADD SCHEME: iloveyou/qqqqqqqqq
+07.09.2024 07:35:37 TRACE ADD COLLECTION: iloveyou/qqqqqqqqq/qw
+07.09.2024 07:35:37 TRACE ADD DATA: iloveyou/qqqqqqqqq/qw/6
+07.09.2024 07:35:42 TRACE ADD DATA: data_pool/student_scheme/group_b/4
+07.09.2024 07:35:42 TRACE UPDATE DATA: data_pool/student_scheme/group_b/3
+07.09.2024 07:35:42 TRACE FIND DATA IN RANGE: data_pool/student_scheme/group_b/3 4
+07.09.2024 07:36:07 TRACE FIND DATA: data_pool/student_scheme/group_b/3
+07.09.2024 07:36:17 TRACE UPDATE DATA: data_pool/student_scheme/group_b/3
+07.09.2024 07:36:17 TRACE FIND DATA IN RANGE: data_pool/student_scheme/group_b/3 4
