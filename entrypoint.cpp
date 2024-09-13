@@ -32,7 +32,7 @@ class EntryPointServer
     std::unordered_map<std::string, std::string> pool_to_server;
     std::vector<std::string> storage_servers;
     std::mutex servers_mutex;
-    int next_port = 8081;
+    int next_port = 8080;
     enum::mode _mode;
 
 public:
@@ -81,12 +81,12 @@ private:
     // Функция добавляет новый сервер хранения данных. Она блокирует доступ к списку серверов (с помощью std::lock_guard),
     // увеличивает номер порта для нового сервера, запускает сервер через функцию start_storage_server и добавляет его URL в список активных серверов.
     // Возвращает ответ с кодом 201 (успешное создание сервера).
-    crow::response add_storage_server();
+    crow::response add_storage_server(int port);
 
     // Функция удаляет сервер хранения данных с наименьшей загрузкой.
     // Перед удалением она получает все данные с этого сервера, чтобы потом импортировать их на другой сервер.
     // Затем сервер останавливается, и данные передаются на сервер с минимальной загрузкой
-    crow::response remove_storage_server(int port);
+    crow::response remove_storage_server(int port1, int port2);
 
 private:
     // Функция получает текущую нагрузку на сервер по его URL.
@@ -108,16 +108,16 @@ void EntryPointServer::run()
         return handle_command(command);
     });
 
-    CROW_ROUTE(app, "/add_storage").methods("POST"_method)([this](const crow::request& req)
+    CROW_ROUTE(app, "/add_storage/<int>").methods("POST"_method)([this](int port)
     {
         print_all_data_from_servers();
-        return add_storage_server();
+        return add_storage_server(port);
     });
 
-    CROW_ROUTE(app, "/remove_storage/<int>").methods("POST"_method)([this](int port)
+    CROW_ROUTE(app, "/remove_storage/<int>/<int>").methods("POST"_method)([this](int port1, int port2)
     {
         print_all_data_from_servers();
-        return remove_storage_server(port);
+        return remove_storage_server(port1,port2);
     });
 
 
@@ -176,7 +176,7 @@ crow::response EntryPointServer::handle_command(const std::string& command)
     {
         if (pool_to_server.find(pool) != pool_to_server.end())
         {
-            return crow::response(400, "Pool already exists: " + pool);  // Если существует, возвращаем ошибку
+            return crow::response(400, "Pool already exists: " + pool);
         }
 
         method = "POST";
@@ -379,11 +379,23 @@ void EntryPointServer::stop_storage_server(const std::string& server_url)
     std::this_thread::sleep_for(std::chrono::seconds(5));
 }
 
-crow::response EntryPointServer::add_storage_server()
+//добавляем сюда по мин нагрузке
+crow::response EntryPointServer::add_storage_server(int port)
 {
     std::lock_guard<std::mutex> lock(servers_mutex);
-    int port = next_port++;
+
+    if (port == 8080)
+    {
+        return crow::response(404, "This port cannot be used");
+    }
+
     std::string server_url = "http://127.0.0.1:" + std::to_string(port);
+
+    auto it_remove = std::find(storage_servers.begin(), storage_servers.end(), server_url);
+    if (it_remove != storage_servers.end())
+    {
+        return crow::response(404, "The server is already in use");
+    }
 
     start_storage_server(port);
 
@@ -393,7 +405,7 @@ crow::response EntryPointServer::add_storage_server()
     return crow::response(201, "Storage server added successfully");
 }
 
-crow::response EntryPointServer::remove_storage_server(int port)
+crow::response EntryPointServer::remove_storage_server(int port1, int port2)
 {
     std::lock_guard<std::mutex> lock(servers_mutex);
 
@@ -402,7 +414,12 @@ crow::response EntryPointServer::remove_storage_server(int port)
         return crow::response(400, "Cannot remove the last remaining server");
     }
 
-    std::string server_to_remove = "http://127.0.0.1:" + std::to_string(port);
+    if (port1 == 8080 || port2 == 8080)
+    {
+        return crow::response(404, "This port cannot be used");
+    }
+
+    std::string server_to_remove = "http://127.0.0.1:" + std::to_string(port1);
 
     auto it_remove = std::find(storage_servers.begin(), storage_servers.end(), server_to_remove);
     if (it_remove == storage_servers.end())
@@ -410,7 +427,12 @@ crow::response EntryPointServer::remove_storage_server(int port)
         return crow::response(404, "Server not found");
     }
 
-    std::string least_loaded_server = get_least_loaded_server_url();
+    std::string least_loaded_server = "http://127.0.0.1:" + std::to_string(port2);
+    it_remove = std::find(storage_servers.begin(), storage_servers.end(), least_loaded_server);
+    if (it_remove == storage_servers.end())
+    {
+        return crow::response(404, "Server not found");
+    }
 
     std::string all_data_url = server_to_remove + "/all_data";
     std::string all_data_json = send_request_to_storage("", all_data_url, "GET");

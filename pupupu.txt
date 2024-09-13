@@ -15,7 +15,6 @@ ADD_STORAGE
 ADD_DATA data_pool student_scheme group_b 4 Michael Brown
 UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
 FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-REMOVE_STORAGE
 ADD_STORAGE
 ADD_STORAGE
 ADD_STORAGE
@@ -56,13 +55,13 @@ ADD_DATA jkwhi iiiii ooooo 7 rrrrr rrrt
 ADD_DATA data_pool student_scheme group_b 4 Michael Brown
 UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
 FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-REMOVE_STORAGE
+REMOVE_STORAGE 8086
 ADD_POOL opo
 ADD_SCHEME opo popo
 ADD_COLLECTION opo popo plpl
 ADD_DATA opo popo plpl 98 hhh huhuhu
 ADD_DATA jkwhi iiiii ooooo 7 y h
 FIND_DATA jkwhi iiiii ooooo 7
-REMOVE_STORAGE
-REMOVE_STORAGE
-REMOVE_STORAGE
+REMOVE_STORAGE 8084
+REMOVE_STORAGE 8081
+REMOVE_STORAGE 8083

@@ -1,4 +1,7 @@
-ADD_STORAGE
+ADD_STORAGE 8083
+ADD_STORAGE 8085
+ADD_STORAGE 8082
+ADD_STORAGE 8082
 ADD_POOL data_pool
 ADD_SCHEME data_pool student_scheme
 ADD_COLLECTION data_pool student_scheme group_a
@@ -7,9 +10,15 @@ ADD_DATA data_pool student_scheme group_a 1 John Doe
 ADD_DATA data_pool student_scheme group_a 2 Jane Smith
 ADD_DATA data_pool student_scheme group_b 3 Emily Jones
 FIND_DATA data_pool student_scheme group_b 3
-ADD_STORAGE
-ADD_POOL oooo
-ADD_SCHEME oooo qqqqqqqqq
-ADD_COLLECTION oooo qqqqqqqqq qw
-ADD_DATA oooo qqqqqqqqq qw 6 lol lololo
-REMOVE_STORAGE 8081
+ADD_POOL iloveyou
+ADD_SCHEME iloveyou qqqqqqqqq
+ADD_COLLECTION iloveyou qqqqqqqqq qw
+ADD_DATA iloveyou qqqqqqqqq qw 6 lol lololo
+ADD_POOL opo
+ADD_SCHEME opo popo
+ADD_COLLECTION opo popo plpl
+ADD_DATA opo popo plpl 98 hhh huhuhu
+FIND_DATA opo popo plpl 98
+REMOVE_STORAGE 8085 8083
+REMOVE_STORAGE 8085 8080
+REMOVE_STORAGE 8085 8081
