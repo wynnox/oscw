@@ -24,13 +24,15 @@ void send_request(const std::string& command, const std::string& server_url)
         // std::string full_url = server_url + "/command";
 
         std::string full_url;
-        if (command == "ADD_STORAGE")
+
+        if (command.find("REMOVE_STORAGE") == 0)
+        {
+            std::string port = command.substr(15);
+            full_url = server_url + "/remove_storage/" + port;
+        }
+        else if (command == "ADD_STORAGE")
         {
             full_url = server_url + "/add_storage";
-        }
-        else if (command == "REMOVE_STORAGE")
-        {
-            full_url = server_url + "/remove_storage";
         }
         else
         {

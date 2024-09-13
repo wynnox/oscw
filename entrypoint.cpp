@@ -86,7 +86,7 @@ private:
     // Функция удаляет сервер хранения данных с наименьшей загрузкой.
     // Перед удалением она получает все данные с этого сервера, чтобы потом импортировать их на другой сервер.
     // Затем сервер останавливается, и данные передаются на сервер с минимальной загрузкой
-    crow::response remove_storage_server();
+    crow::response remove_storage_server(int port);
 
 private:
     // Функция получает текущую нагрузку на сервер по его URL.
@@ -114,10 +114,10 @@ void EntryPointServer::run()
         return add_storage_server();
     });
 
-    CROW_ROUTE(app, "/remove_storage").methods("POST"_method)([this]()
+    CROW_ROUTE(app, "/remove_storage/<int>").methods("POST"_method)([this](int port)
     {
         print_all_data_from_servers();
-        return remove_storage_server();
+        return remove_storage_server(port);
     });
 
 
@@ -393,7 +393,7 @@ crow::response EntryPointServer::add_storage_server()
     return crow::response(201, "Storage server added successfully");
 }
 
-crow::response EntryPointServer::remove_storage_server()
+crow::response EntryPointServer::remove_storage_server(int port)
 {
     std::lock_guard<std::mutex> lock(servers_mutex);
 
@@ -402,20 +402,15 @@ crow::response EntryPointServer::remove_storage_server()
         return crow::response(400, "Cannot remove the last remaining server");
     }
 
-    std::string least_loaded_server;
-    int min_load = INT_MAX;
+    std::string server_to_remove = "http://127.0.0.1:" + std::to_string(port);
 
-    for (const auto& server_url : storage_servers)
+    auto it_remove = std::find(storage_servers.begin(), storage_servers.end(), server_to_remove);
+    if (it_remove == storage_servers.end())
     {
-        int load = get_server_load(server_url);
-        if (load != -1 && load < min_load)
-        {
-            min_load = load;
-            least_loaded_server = server_url;
-        }
+        return crow::response(404, "Server not found");
     }
 
-    std::string server_to_remove = least_loaded_server;
+    std::string least_loaded_server = get_least_loaded_server_url();
 
     std::string all_data_url = server_to_remove + "/all_data";
     std::string all_data_json = send_request_to_storage("", all_data_url, "GET");
@@ -427,24 +422,10 @@ crow::response EntryPointServer::remove_storage_server()
 
     std::cout << "Data from the server to be removed: " << all_data_json << std::endl;
 
-    auto it = std::find(storage_servers.begin(), storage_servers.end(), server_to_remove);
-    if (it != storage_servers.end())
-    {
-        storage_servers.erase(it);
-        std::cout << "Removing least loaded server: " << least_loaded_server << std::endl;
-    }
-    else
-    {
-        return crow::response(500, "Error removing server");
-    }
-
+    storage_servers.erase(it_remove);
     stop_storage_server(server_to_remove);
 
-    size_t target_server_index = get_least_loaded_server();
-    std::string target_server_url = storage_servers[target_server_index];
-
-
-    std::string add_data_url = target_server_url + "/import_data";
+    std::string add_data_url = least_loaded_server + "/import_data";
     std::string result = send_request_to_storage(all_data_json, add_data_url, "POST");
 
     if (result != "Data imported successfully")
@@ -466,8 +447,8 @@ crow::response EntryPointServer::remove_storage_server()
         for (auto& pool_item : imported_data.items())
         {
             std::string pool_name = pool_item.key();
-            pool_to_server[pool_name] = target_server_url;
-            std::cout << "Pool " << pool_name << " перенесен на сервер " << target_server_url << std::endl;
+            pool_to_server[pool_name] = least_loaded_server;
+            std::cout << "Pool " << pool_name << " перенесен на сервер " << least_loaded_server << std::endl;
         }
     }
     catch (const std::exception& e)

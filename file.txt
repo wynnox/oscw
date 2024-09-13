@@ -12,4 +12,4 @@ ADD_POOL oooo
 ADD_SCHEME oooo qqqqqqqqq
 ADD_COLLECTION oooo qqqqqqqqq qw
 ADD_DATA oooo qqqqqqqqq qw 6 lol lololo
-REMOVE_STORAGE
+REMOVE_STORAGE 8081

@@ -1,15 +1,11 @@
-10.09.2024 14:58:57 TRACE CREATE B_TREE DATABASE
-10.09.2024 14:59:02 TRACE Attempting to insert pool with key: data_pool
-10.09.2024 14:59:02 TRACE Pool added successfully with key: data_pool
-10.09.2024 14:59:02 TRACE ADD SCHEME: data_pool/student_scheme
-10.09.2024 14:59:02 TRACE ADD COLLECTION: data_pool/student_scheme/group_a
-10.09.2024 14:59:02 TRACE ADD COLLECTION: data_pool/student_scheme/group_b
-10.09.2024 14:59:02 TRACE ADD DATA: data_pool/student_scheme/group_a/1
-10.09.2024 14:59:02 TRACE ADD DATA: data_pool/student_scheme/group_a/2
-10.09.2024 14:59:02 TRACE ADD DATA: data_pool/student_scheme/group_b/3
-10.09.2024 14:59:02 TRACE FIND DATA: data_pool/student_scheme/group_b/3
-10.09.2024 14:59:12 TRACE Attempting to insert pool with key: oooo
-10.09.2024 14:59:12 TRACE ADD SCHEME: oooo/qqqqqqqqq
-10.09.2024 14:59:12 TRACE ADD COLLECTION: oooo/qqqqqqqqq/qw
-10.09.2024 14:59:12 TRACE ADD DATA: oooo/qqqqqqqqq/qw/6
-10.09.2024 15:23:00 TRACE DELETE B_TREE DATABASE
+13.09.2024 15:14:14 TRACE CREATE B_TREE DATABASE
+13.09.2024 15:14:19 TRACE Attempting to insert pool with key: data_pool
+13.09.2024 15:14:19 TRACE Pool added successfully with key: data_pool
+13.09.2024 15:14:19 TRACE ADD SCHEME: data_pool/student_scheme
+13.09.2024 15:14:19 TRACE ADD COLLECTION: data_pool/student_scheme/group_a
+13.09.2024 15:14:19 TRACE ADD COLLECTION: data_pool/student_scheme/group_b
+13.09.2024 15:14:19 TRACE ADD DATA: data_pool/student_scheme/group_a/1
+13.09.2024 15:14:19 TRACE ADD DATA: data_pool/student_scheme/group_a/2
+13.09.2024 15:14:19 TRACE ADD DATA: data_pool/student_scheme/group_b/3
+13.09.2024 15:14:19 TRACE FIND DATA: data_pool/student_scheme/group_b/3
+13.09.2024 15:14:24 TRACE DELETE B_TREE DATABASE

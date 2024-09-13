@@ -173,7 +173,7 @@ public:
         {
             std::lock_guard<std::mutex> lock(store_mutex);
 
-            std::cout << "Received raw request body: " << req.body << std::endl; // Лог запроса
+            std::cout << "Received raw request body: " << req.body << std::endl;
 
             try {
                 auto json_data = nlohmann::json::parse(req.body);
