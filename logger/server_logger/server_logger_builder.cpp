@@ -1,5 +1,3 @@
-    #include <not_implemented.h>
-
 #include "server_logger_builder.h"
 
 server_logger_builder::server_logger_builder() = default;

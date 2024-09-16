@@ -99,34 +99,83 @@ void send_request(const std::string& command, const std::string& server_url)
     }
 }
 
+void menu()
+{
+    std::cout << "0. Меню\n";
+    std::cout << "1. Ввод команд\n";
+    std::cout << "2. Ввод файла\n";
+    std::cout << "3. Выход\n";
+    std::cout << "=============================\n";
+    std::cout << "Введите номер команды: ";
+}
 
 int main(int argc, char* argv[])
 {
-    if (argc != 3)
+    if (argc != 2)
     {
-        std::cerr << "Usage: " << argv[0] << " <command_file> <server_url>" << std::endl;
+        std::cerr << "Usage: " << argv[0] << "<server_url>" << std::endl;
         return 1;
     }
 
-    std::string input_file = argv[1];
-    std::string server_url = argv[2];
+    std::string server_url = argv[1];
 
-    std::ifstream infile(input_file);
-    if (!infile.is_open())
-    {
-        std::cerr << "Could not open file: " << input_file << std::endl;
-        return 1;
-    }
+    std::cout << "Hello!" << std::endl;
 
-    std::string command;
-    while (std::getline(infile, command))
+    std::string choice;
+    std::string command, input_file;
+
+    while(true)
     {
-        if (!command.empty())
+        menu();
+        std::cin >> choice;
+
+        if (choice == "0")
         {
-            send_request(command, server_url);
+            menu();
         }
+        else if (choice == "1")
+        {
+            std::cout << "Введите команду: ";
+            std::cin.ignore();
+            std::getline(std::cin, command);
+            if (!command.empty())
+            {
+                send_request(command, server_url);
+            }
+        }
+        else if (choice == "2")
+        {
+            std::cout << "Введите имя файла: ";
+            std::cin.ignore();
+            std::getline(std::cin, input_file);
+            {
+                std::ifstream infile(input_file);
+                if (!infile.is_open())
+                {
+                    std::cerr << "Не удалось открыть файл: " << input_file << std::endl;
+                    continue;
+                }
 
+                while (std::getline(infile, command))
+                {
+                    if (!command.empty())
+                    {
+                        send_request(command, server_url);
+                    }
+                }
+            }
+        }
+        else if (choice == "3")
+        {
+            std::cout << "Выход из программы." << std::endl;
+            return 0;
+        }
+        else
+        {
+            std::cout << "Неверная команда, попробуйте снова." << std::endl;
+        }
     }
+
 
     return 0;
 }
