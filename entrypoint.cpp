@@ -7,6 +7,8 @@
 #include <nlohmann/json.hpp>
 #include <curl/curl.h>
 #include <sstream>
+#include "logger/client_logger/client_logger.h"
+#include "logger/client_logger/client_logger_builder.h"
 
 using json = nlohmann::json;
 
@@ -34,9 +36,10 @@ class EntryPointServer
     std::mutex servers_mutex;
     int next_port = 8080;
     enum::mode _mode;
+    logger* _logger;
 
 public:
-    EntryPointServer(enum::mode modee): _mode(modee) {}
+    EntryPointServer(enum::mode modee, logger* logger): _mode(modee), _logger(logger) {}
 
     // Эта функция содержит маршруты для команд пользователей
     // /command - это маршрут для команд пользователя, связанные с данными
@@ -44,6 +47,8 @@ public:
     // /remove_storage - маршрут для инамическое удаления сервера
     // сервер запускается на порту 8080
     void run();
+
+    void monitor_servers();
 
 private:
     //команда, в которую направляются запросы с командами типа удаление пулов, поисков и тд
@@ -60,13 +65,11 @@ private:
 
     void print_all_data_from_servers()
     {
-        std::cout << "все данные " << std::endl;
-
         for (const auto& server_url : storage_servers)
         {
             std::string all_data_url = server_url + "/all_data";
             std::string all_data_json = send_request_to_storage("", all_data_url, "GET");
-            std::cout << "Данные с сервера " << server_url << ": " << all_data_json << std::endl;
+            _logger->information("[" + server_url + "] " + "Data: " + all_data_json);
         }
     }
 
@@ -82,6 +85,8 @@ private:
     // увеличивает номер порта для нового сервера, запускает сервер через функцию start_storage_server и добавляет его URL в список активных серверов.
     // Возвращает ответ с кодом 201 (успешное создание сервера).
     crow::response add_storage_server(int port);
+
+    bool is_server_alive(const std::string& server_url);
 
     // Функция удаляет сервер хранения данных с наименьшей загрузкой.
     // Перед удалением она получает все данные с этого сервера, чтобы потом импортировать их на другой сервер.
@@ -100,6 +105,9 @@ private:
 
 void EntryPointServer::run()
 {
+    std::thread heartbeat_thread(&EntryPointServer::monitor_servers, this);
+    heartbeat_thread.detach();
+
     crow::SimpleApp app;
 
     CROW_ROUTE(app, "/command").methods("POST"_method)([this](const crow::request& req)
@@ -156,12 +164,14 @@ crow::response EntryPointServer::handle_command(const std::string& command)
 
     if (command_argument_count.find(tokens[0]) == command_argument_count.end())
     {
+        _logger->error("Invalid command: " + tokens[0]);
         return crow::response(400, "Invalid command: " + tokens[0]);
     }
 
     size_t expected_arguments = command_argument_count.at(tokens[0]);
     if (tokens.size() - 1 < expected_arguments)
     {
+        _logger->error("Invalid number of arguments for " + tokens[0]);
         return crow::response(400, "Invalid number of arguments for " + tokens[0]);
     }
 
@@ -176,6 +186,7 @@ crow::response EntryPointServer::handle_command(const std::string& command)
     {
         if (pool_to_server.find(pool) != pool_to_server.end())
         {
+            _logger->error("Pool already exists: " + pool);
             return crow::response(400, "Pool already exists: " + pool);
         }
 
@@ -190,6 +201,7 @@ crow::response EntryPointServer::handle_command(const std::string& command)
     {
         if (pool_to_server.find(pool) == pool_to_server.end())
         {
+            _logger->error("Pool not found: " + pool);
             return crow::response(400, "Pool not found: " + pool);
         }
 
@@ -283,8 +295,12 @@ crow::response EntryPointServer::handle_command(const std::string& command)
         }
     }
 
+    _logger->trace("[" + server_url + "] " + "Send command " + command);
     std::string json_command = command_json.dump();
     std::string storage_response = send_request_to_storage(json_command, url, method);
+
+    _logger->trace("[" + server_url + "] " + "Received from storage server: " + storage_response);
+    print_all_data_from_servers();
 
     return crow::response(response_code, storage_response);
 }
@@ -334,22 +350,61 @@ std::string EntryPointServer::send_request_to_storage(const std::string& json_co
 
         if (res != CURLE_OK)
         {
-            std::cerr << "Failed to send command to storage server: " << curl_easy_strerror(res) << std::endl;
+            _logger->error("[" + storage_url + "] " + "Failed to send command to storage server");
         }
-        else
-        {
-            std::cout << "Received from storage server: " << response_data << std::endl;
-        }
+        // else
+        // {
+        //     _logger->trace("[" + storage_url + "] " + "Received from storage server: " + response_data);
+        // }
 
         curl_slist_free_all(headers);
         curl_easy_cleanup(curl);
     }
     else
     {
-        std::cerr << "Failed to initialize cURL for storage server" << std::endl;
+        _logger->error("[" + storage_url + "] " + "Failed to initialize cURL for storage server ");
     }
 
     return response_data;
+}
+
+void EntryPointServer::monitor_servers()
+{
+    while (true)
+    {
+        for (const auto& server_url : storage_servers)
+        {
+            if (!is_server_alive(server_url))
+            {
+                _logger->error("[" + server_url + "] " + "Сервер не отвечает. Перезапуск");
+            }
+        }
+
+        std::this_thread::sleep_for(std::chrono::seconds(5));
+    }
+}
+
+bool EntryPointServer::is_server_alive(const std::string& server_url)
+{
+    CURL* curl = curl_easy_init();
+    int response_code = 0;
+    std::string command = server_url + "/heartbeat";
+
+    if(curl)
+    {
+        curl_easy_setopt(curl, CURLOPT_URL, command.c_str());
+        curl_easy_setopt(curl, CURLOPT_NOBODY, 1);
+
+        CURLcode res = curl_easy_perform(curl);
+        if (res == CURLE_OK)
+        {
+            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+        }
+
+        curl_easy_cleanup(curl);
+    }
+
+    return response_code == 200;
 }
 
 void EntryPointServer::start_storage_server(int port)
@@ -400,7 +455,8 @@ crow::response EntryPointServer::add_storage_server(int port)
     start_storage_server(port);
 
     storage_servers.push_back(server_url);
-    std::cout << "Storage server added on port: " << port << std::endl;
+
+    _logger->trace("[" + server_url + "] " + "Storage server added on port");
 
     return crow::response(201, "Storage server added successfully");
 }
@@ -427,6 +483,8 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
         return crow::response(404, "Server not found");
     }
 
+    storage_servers.erase(it_remove);
+
     std::string least_loaded_server = "http://127.0.0.1:" + std::to_string(port2);
     it_remove = std::find(storage_servers.begin(), storage_servers.end(), least_loaded_server);
     if (it_remove == storage_servers.end())
@@ -442,9 +500,8 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
         return crow::response(500, "Error retrieving data from server");
     }
 
-    std::cout << "Data from the server to be removed: " << all_data_json << std::endl;
+    _logger->information("[" + server_to_remove + "] " + "Data from the server to be removed: " + all_data_json);
 
-    storage_servers.erase(it_remove);
     stop_storage_server(server_to_remove);
 
     std::string add_data_url = least_loaded_server + "/import_data";
@@ -455,7 +512,7 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
         return crow::response(500, "Error importing data to the least loaded server");
     }
 
-    std::cout << "Result of importing data to the least loaded server: " << result << std::endl;
+    _logger->trace("[" + least_loaded_server + "] " + "Result of importing data to the least loaded server: " + result);
 
     try
     {
@@ -470,14 +527,16 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
         {
             std::string pool_name = pool_item.key();
             pool_to_server[pool_name] = least_loaded_server;
-            std::cout << "Pool " << pool_name << " перенесен на сервер " << least_loaded_server << std::endl;
+            _logger->trace("[" + least_loaded_server + "] " + "Pool " + pool_name + " moved to server");
         }
     }
     catch (const std::exception& e)
     {
-        std::cerr << "Ошибка при обновлении данных о пулах: " << e.what() << std::endl;
+        _logger->error("Error updating pool data");
         return crow::response(500, "Error updating pool data");
     }
+
+    // print_all_data_from_servers();
 
     return crow::response(201, "Removing server is done");
 }
@@ -502,7 +561,7 @@ int EntryPointServer::get_server_load(const std::string& server_url)
         }
         else
         {
-            std::cerr << "Failed to get load from server: " << curl_easy_strerror(res) << std::endl;
+            _logger->error("Failed to get load from server");
         }
 
         curl_easy_cleanup(curl);
@@ -527,6 +586,28 @@ size_t EntryPointServer::get_least_loaded_server()
     }
 
     return least_loaded_server_index;
+}
+
+logger *create_logger(
+    std::vector<std::pair<std::string, logger::severity>> const &output_file_streams_setup,
+    bool use_console_stream = true,
+    logger::severity console_stream_severity = logger::severity::debug) {
+
+    logger_builder *builder = new client_logger_builder();
+
+    if (use_console_stream) {
+        builder->add_console_stream(console_stream_severity);
+    }
+
+    for (auto &output_file_stream_setup: output_file_streams_setup) {
+        builder->add_file_stream(output_file_stream_setup.first, output_file_stream_setup.second);
+    }
+
+    logger *built_logger = builder->build();
+
+    delete builder;
+
+    return built_logger;
 }
 
 int main(int argc, char* argv[])
@@ -554,7 +635,21 @@ int main(int argc, char* argv[])
         return 1;
     }
 
-    EntryPointServer server(selected_mode);
+    std::string file = "logs_entrypoint.txt";
+
+    logger *logger = create_logger(std::vector<std::pair<std::string, logger::severity>>{
+        {file, logger::severity::trace},
+        {file, logger::severity::information},
+        {file, logger::severity::error}
+    });
+
+    if(logger == nullptr)
+    {
+        std::cerr << "Error: Logger creation failed." << std::endl;
+        return 1;
+    }
+
+    EntryPointServer server(selected_mode, logger);
     server.run();
 
     return 0;

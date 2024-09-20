@@ -946,4 +946,12 @@ CMakeFiles/entrypoint_program.dir/entrypoint.cpp.o: \
  /usr/include/x86_64-linux-gnu/curl/options.h \
  /usr/include/x86_64-linux-gnu/curl/header.h \
  /usr/include/x86_64-linux-gnu/curl/websockets.h \
- /usr/include/x86_64-linux-gnu/curl/mprintf.h
+ /usr/include/x86_64-linux-gnu/curl/mprintf.h \
+ /home/nncl/oscw/logger/client_logger/client_logger.h \
+ /home/nncl/oscw/logger/logger/logger.h \
+ /home/nncl/oscw/logger/client_logger/client_logger_builder.h \
+ /home/nncl/oscw/logger/logger/logger_builder.h \
+ /home/nncl/oscw/logger/logger/logger.h /usr/include/c++/13/set \
+ /usr/include/c++/13/bits/stl_set.h \
+ /usr/include/c++/13/bits/stl_multiset.h \
+ /home/nncl/oscw/logger/client_logger/client_logger_builder.h

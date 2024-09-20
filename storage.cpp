@@ -214,6 +214,11 @@ public:
             return import_data_from_json(_db, req.body);
         });
 
+        CROW_ROUTE(app, "/heartbeat").methods("GET"_method)([]()
+        {
+            return crow::response(200, "Server is alive");
+        });
+
         app.port(port).run();
     }
 
@@ -504,7 +509,8 @@ int main(int argc, char* argv[])
     std::string file = "logs" + std::to_string(port) + ".txt";
 
     logger *logger = create_logger(std::vector<std::pair<std::string, logger::severity>>{
-        {file, logger::severity::trace}
+        {file, logger::severity::trace},
+        {file, logger::severity::error}
     });
 
     if(logger == nullptr)

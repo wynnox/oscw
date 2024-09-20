@@ -330,6 +330,10 @@ CMakeFiles/entrypoint_program.dir/entrypoint.cpp.o: /home/nncl/oscw/entrypoint.c
   _deps/json-src/include/nlohmann/ordered_map.hpp \
   _deps/json-src/include/nlohmann/thirdparty/hedley/hedley.hpp \
   _deps/json-src/include/nlohmann/thirdparty/hedley/hedley_undef.hpp \
+  /home/nncl/oscw/logger/client_logger/client_logger.h \
+  /home/nncl/oscw/logger/client_logger/client_logger_builder.h \
+  /home/nncl/oscw/logger/logger/logger.h \
+  /home/nncl/oscw/logger/logger/logger_builder.h \
   /usr/include/alloca.h \
   /usr/include/arpa/inet.h \
   /usr/include/asio.hpp \
@@ -900,10 +904,12 @@ CMakeFiles/entrypoint_program.dir/entrypoint.cpp.o: /home/nncl/oscw/entrypoint.c
   /usr/include/c++/13/bits/stl_iterator_base_types.h \
   /usr/include/c++/13/bits/stl_map.h \
   /usr/include/c++/13/bits/stl_multimap.h \
+  /usr/include/c++/13/bits/stl_multiset.h \
   /usr/include/c++/13/bits/stl_numeric.h \
   /usr/include/c++/13/bits/stl_pair.h \
   /usr/include/c++/13/bits/stl_raw_storage_iter.h \
   /usr/include/c++/13/bits/stl_relops.h \
+  /usr/include/c++/13/bits/stl_set.h \
   /usr/include/c++/13/bits/stl_tempbuf.h \
   /usr/include/c++/13/bits/stl_tree.h \
   /usr/include/c++/13/bits/stl_uninitialized.h \
@@ -985,6 +991,7 @@ CMakeFiles/entrypoint_program.dir/entrypoint.cpp.o: /home/nncl/oscw/entrypoint.c
   /usr/include/c++/13/pstl/pstl_config.h \
   /usr/include/c++/13/random \
   /usr/include/c++/13/ratio \
+  /usr/include/c++/13/set \
   /usr/include/c++/13/sstream \
   /usr/include/c++/13/stdexcept \
   /usr/include/c++/13/streambuf \
@@ -2585,16 +2592,6 @@ CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o: /home/nnc
 
 /home/nncl/oscw/logger/logger/logger.cpp:
 
-/usr/include/c++/13/set:
-
-/usr/include/c++/13/bits/stl_set.h:
-
-/usr/include/c++/13/bits/stl_multiset.h:
-
-/home/nncl/oscw/logger/logger/logger_builder.h:
-
-/home/nncl/oscw/logger/client_logger/client_logger_builder.h:
-
 /usr/local/include/crow/utility.h:
 
 /usr/local/include/crow/socket_adaptors.h:
@@ -2753,6 +2750,8 @@ CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o: /home/nnc
 
 /usr/include/c++/13/sstream:
 
+/usr/include/c++/13/set:
+
 /usr/local/include/crow/settings.h:
 
 /usr/include/c++/13/ratio:
@@ -2811,9 +2810,13 @@ CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o: /home/nnc
 
 /usr/include/c++/13/bits/stl_tree.h:
 
+/usr/include/c++/13/bits/stl_set.h:
+
 /usr/include/c++/13/bits/stl_raw_storage_iter.h:
 
 /usr/include/c++/13/bits/stl_numeric.h:
+
+/usr/include/c++/13/bits/stl_multiset.h:
 
 /usr/include/c++/13/bits/sstream.tcc:
 
@@ -2836,10 +2839,6 @@ CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o: /home/nnc
 /usr/include/c++/13/bits/locale_facets_nonio.tcc:
 
 /usr/include/c++/13/bits/locale_facets_nonio.h:
-
-/home/nncl/oscw/logger/client_logger/client_logger.h:
-
-/usr/include/c++/13/bits/hashtable_policy.h:
 
 /usr/include/c++/13/bits/hashtable.h:
 
@@ -3129,13 +3128,7 @@ CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o: /home/nnc
 
 /usr/include/asio/impl/execution_context.ipp:
 
-/usr/lib/gcc/x86_64-linux-gnu/13/include/float.h:
-
-/usr/include/asio/associated_executor.hpp:
-
-/usr/include/asio/associated_cancellation_slot.hpp:
-
-/usr/include/c++/13/bits/ptr_traits.h:
+/usr/include/asio/impl/error.ipp:
 
 /usr/include/asio/append.hpp:
 
@@ -3154,6 +3147,8 @@ CMakeFiles/entrypoint_program.dir/logger/logger/logger_guardant.cpp.o: /home/nnc
 /usr/include/asio/posix/stream_descriptor.hpp:
 
 /usr/include/asio/generic/detail/endpoint.hpp:
+
+/home/nncl/oscw/logger/logger/logger_builder.h:
 
 _deps/json-src/include/nlohmann/thirdparty/hedley/hedley_undef.hpp:
 
@@ -3291,14 +3286,6 @@ _deps/json-src/include/nlohmann/detail/conversions/to_json.hpp:
 
 /usr/include/asio/basic_deadline_timer.hpp:
 
-/usr/include/asm-generic/bitsperlong.h:
-
-/usr/include/asio/is_write_buffered.hpp:
-
-/usr/include/asio/associated_allocator.hpp:
-
-/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
-
 /usr/include/c++/13/bits/exception_defines.h:
 
 _deps/json-src/include/nlohmann/detail/conversions/to_chars.hpp:
@@ -3425,6 +3412,10 @@ _deps/json-src/include/nlohmann/byte_container_with_subtype.hpp:
 
 /usr/include/asio/detail/bind_handler.hpp:
 
+/usr/include/c++/13/bits/hashtable_policy.h:
+
+/home/nncl/oscw/logger/client_logger/client_logger.h:
+
 /usr/include/x86_64-linux-gnu/bits/types/struct_timeval.h:
 
 /usr/include/c++/13/bits/stl_iterator.h:
@@ -3512,6 +3503,12 @@ _deps/json-src/include/nlohmann/detail/input/json_sax.hpp:
 _deps/json-src/include/nlohmann/detail/string_escape.hpp:
 
 /usr/include/c++/13/bits/streambuf_iterator.h:
+
+/usr/include/asio/execution/set_value.hpp:
+
+/usr/include/asio/detail/deadline_timer_service.hpp:
+
+/usr/include/asio/detail/conditionally_enabled_mutex.hpp:
 
 /usr/include/asio/execution/scheduler.hpp:
 
@@ -3709,6 +3706,10 @@ _deps/json-src/include/nlohmann/json_fwd.hpp:
 
 /usr/include/c++/13/bits/basic_string.tcc:
 
+/usr/include/asio/impl/execution_context.hpp:
+
+/usr/include/asio/detail/reactor.hpp:
+
 /usr/include/c++/13/bits/hash_bytes.h:
 
 /usr/include/c++/13/bits/stl_iterator_base_funcs.h:
@@ -3767,6 +3768,10 @@ _deps/json-src/include/nlohmann/detail/iterators/iteration_proxy.hpp:
 
 /usr/include/x86_64-linux-gnu/c++/13/bits/c++locale.h:
 
+/usr/include/c++/13/bits/ptr_traits.h:
+
+/usr/include/asio/associated_cancellation_slot.hpp:
+
 /usr/include/x86_64-linux-gnu/bits/types/time_t.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/FILE.h:
@@ -3792,6 +3797,14 @@ _deps/json-src/include/nlohmann/detail/iterators/iteration_proxy.hpp:
 /usr/include/c++/13/bits/nested_exception.h:
 
 /usr/include/asio.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/13/include/stddef.h:
+
+/usr/include/asm-generic/bitsperlong.h:
+
+/usr/include/asio/is_write_buffered.hpp:
+
+/usr/include/asio/associated_allocator.hpp:
 
 /usr/include/asio/traits/require_member.hpp:
 
@@ -3900,6 +3913,8 @@ _deps/json-src/include/nlohmann/detail/hash.hpp:
 /usr/include/time.h:
 
 /usr/include/asio/execution/blocking.hpp:
+
+/home/nncl/oscw/logger/client_logger/client_logger_builder.h:
 
 /usr/include/x86_64-linux-gnu/bits/uintn-identity.h:
 
@@ -4011,6 +4026,10 @@ _deps/json-src/include/nlohmann/detail/string_concat.hpp:
 
 /usr/include/asio/detail/reactive_socket_recvfrom_op.hpp:
 
+/usr/lib/gcc/x86_64-linux-gnu/13/include/float.h:
+
+/usr/include/asio/associated_executor.hpp:
+
 /usr/include/asio/associated_immediate_executor.hpp:
 
 /usr/include/asio/impl/any_completion_executor.ipp:
@@ -4108,6 +4127,12 @@ _deps/json-src/include/nlohmann/detail/json_ref.hpp:
 /usr/include/asio/cancellation_state.hpp:
 
 /usr/include/asio/cancellation_type.hpp:
+
+/usr/include/asio/impl/read_until.hpp:
+
+/usr/include/asio/impl/error_code.ipp:
+
+/usr/include/asio/coroutine.hpp:
 
 /usr/include/asio/associator.hpp:
 
@@ -4297,12 +4322,6 @@ _deps/json-src/include/nlohmann/detail/exceptions.hpp:
 
 /usr/include/asio/detail/impl/strand_executor_service.ipp:
 
-/usr/include/asio/impl/read_until.hpp:
-
-/usr/include/asio/coroutine.hpp:
-
-/usr/include/asio/impl/error_code.ipp:
-
 /usr/include/x86_64-linux-gnu/bits/termios-tcflow.h:
 
 /usr/include/asio/detail/op_queue.hpp:
@@ -4310,10 +4329,6 @@ _deps/json-src/include/nlohmann/detail/exceptions.hpp:
 /usr/include/asio/detail/impl/strand_service.ipp:
 
 /usr/include/asio/detail/impl/timer_queue_set.ipp:
-
-/usr/include/asio/detail/reactor.hpp:
-
-/usr/include/asio/impl/execution_context.hpp:
 
 /usr/include/asio/detail/initiate_dispatch.hpp:
 
@@ -4557,12 +4572,6 @@ _deps/json-src/include/nlohmann/detail/meta/std_fs.hpp:
 
 /usr/include/asio/execution/set_error.hpp:
 
-/usr/include/asio/detail/deadline_timer_service.hpp:
-
-/usr/include/asio/detail/conditionally_enabled_mutex.hpp:
-
-/usr/include/asio/execution/set_value.hpp:
-
 /usr/include/x86_64-linux-gnu/asm/bitsperlong.h:
 
 /usr/include/asio/execution_context.hpp:
@@ -4598,5 +4607,3 @@ _deps/json-src/include/nlohmann/detail/meta/std_fs.hpp:
 /usr/include/asio/detail/impl/epoll_reactor.hpp:
 
 /usr/include/asio/impl/detached.hpp:
-
-/usr/include/asio/impl/error.ipp:
