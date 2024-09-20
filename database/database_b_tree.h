@@ -301,24 +301,6 @@ public:
         return json_tree;
     }
 
-
-
-
-public:
-    bool pool_exists(const std::string& pool_name) const
-    {
-        try
-        {
-            // _database->obtain(pool_name);
-            return true;
-        }
-        catch (const std::exception& e)
-        {
-            return false;
-        }
-    }
-
-
 };
 
 #endif //B_TREE_DATABASE_H

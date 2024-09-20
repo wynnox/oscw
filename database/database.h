@@ -15,7 +15,6 @@ public:
 
     virtual ~database() = default;
     virtual server_type get_server_type() const = 0;
-    virtual bool pool_exists(const std::string& pool_name) const = 0;
 
     virtual void add_pool(const std::string& pool_name) = 0;
     virtual void rm_pool(const std::string& pool_name) = 0;

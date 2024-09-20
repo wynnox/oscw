@@ -93,6 +93,11 @@ private:
     // Затем сервер останавливается, и данные передаются на сервер с минимальной загрузкой
     crow::response remove_storage_server(int port1, int port2);
 
+    void restart_storage_server(const std::string& server_url);
+
+    std::string export_data_to_json(const std::string& server_url);
+
+
 private:
     // Функция получает текущую нагрузку на сервер по его URL.
     // Для этого она отправляет GET-запрос на сервер по адресу /load и возвращает полученное значение нагрузки.
@@ -101,12 +106,17 @@ private:
     // Функция находит сервер с наименьшей нагрузкой, перебирая все серверы и запрашивая их текущую нагрузку.
     // Возвращает индекс сервера с минимальной нагрузкой.
     size_t get_least_loaded_server();
+
+    void load_data_on_startup(const std::string& server_url);
+
+    void save_data_before_shutdown(const std::string& server_url);
+
 };
 
 void EntryPointServer::run()
 {
-    std::thread heartbeat_thread(&EntryPointServer::monitor_servers, this);
-    heartbeat_thread.detach();
+    // std::thread heartbeat_thread(&EntryPointServer::monitor_servers, this);
+    // heartbeat_thread.detach();
 
     crow::SimpleApp app;
 
@@ -377,12 +387,65 @@ void EntryPointServer::monitor_servers()
             if (!is_server_alive(server_url))
             {
                 _logger->error("[" + server_url + "] " + "Сервер не отвечает. Перезапуск");
+                restart_storage_server(server_url);
             }
         }
 
         std::this_thread::sleep_for(std::chrono::seconds(5));
     }
 }
+
+// TODO
+std::string EntryPointServer::export_data_to_json(const std::string& server_url)
+{
+    std::string all_data_url = server_url + "/all_data";
+    std::string all_data_json = send_request_to_storage("", all_data_url, "GET");
+
+    if (all_data_json.empty())
+    {
+        _logger->error("[" + server_url + "] " + "Ошибка получения данных для экспорта");
+    }
+
+    return all_data_json;
+}
+
+// void EntryPointServer::save_data_before_shutdown(const std::string& server_url)
+// {
+//     std::string data_json = export_data_to_json(server_url);
+//     std::ofstream out("backup_" + server_url.substr(server_url.find_last_of(':') + 1) + ".json");
+//     out << data_json;
+//     out.close();
+// }
+
+// void EntryPointServer::load_data_on_startup(const std::string& server_url)
+// {
+//     std::string filename = "backup_" + server_url.substr(server_url.find_last_of(':') + 1) + ".json";
+//     std::ifstream in(filename);
+//     if (in) {
+//         std::stringstream buffer;
+//         buffer << in.rdbuf();
+//         std::string data_json = buffer.str();
+//         send_request_to_storage(data_json, server_url + "/import_data", "POST");
+//         std::filesystem::remove(filename);
+//     }
+// }
+
+// void EntryPointServer::restart_storage_server(const std::string& server_url)
+// {
+//     std::string port_str = server_url.substr(server_url.find_last_of(':') + 1);
+//     int port = std::stoi(port_str);
+//
+//     std::string all_data_json = export_data_to_json(server_url);
+//
+//     stop_storage_server(server_url);
+//     _logger->trace("[" + server_url + "] " + "Сервер был остановлен для перезапуска.");
+//
+//     start_storage_server(port);
+//     _logger->trace("[" + server_url + "] " + "Сервер был перезапущен на порту: " + std::to_string(port));
+//
+//     load_data_on_startup(server_url);
+//
+// }
 
 bool EntryPointServer::is_server_alive(const std::string& server_url)
 {
