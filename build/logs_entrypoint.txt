@@ -1,46 +1,30 @@
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Storage server added on port
-20.09.2024 14:55:30 ERROR Failed to get load from server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command ADD_POOL data_pool
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 ERROR Failed to get load from server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command ADD_POOL lol
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command ADD_SCHEME data_pool student_scheme
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool/data_pool/scheme] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command ADD_COLLECTION data_pool student_scheme group_a
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool/data_pool/scheme/student_scheme/collection] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command ADD_COLLECTION data_pool student_scheme group_b
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool/data_pool/scheme/student_scheme/collection] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command ADD_DATA data_pool student_scheme group_a 1 John Doe
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool/data_pool/scheme/student_scheme/collection/group_a] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Send command FIND_DATA data_pool student_scheme group_a 1
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/pool/data_pool/scheme/student_scheme/collection/group_a/data/1] Failed to send command to storage server
-20.09.2024 14:55:30 TRACE [http://127.0.0.1:8083] Received from storage server: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 INFORMATION [http://127.0.0.1:8083] Data: 
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083] Сервер не отвечает. Перезапуск
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/all_data] Failed to send command to storage server
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083] Ошибка получения данных для экспорта
-20.09.2024 14:55:30 ERROR [http://127.0.0.1:8083/shutdown] Failed to send command to storage server
-20.09.2024 14:55:35 TRACE [http://127.0.0.1:8083] Сервер был остановлен для перезапуска.
-20.09.2024 14:55:40 TRACE [http://127.0.0.1:8083] Сервер был перезапущен на порту: 8083
+20.09.2024 18:57:22 TRACE This port cannot be used
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Storage server added on port
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: null
+20.09.2024 18:57:27 ERROR [http://127.0.0.1:8085] The server is already in use
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_POOL data_pool
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Pool added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":null}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_SCHEME data_pool student_scheme
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Scheme added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":null}}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_COLLECTION data_pool student_scheme group_a
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Collection added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":null}}}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_COLLECTION data_pool student_scheme group_b
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Collection added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":null,"group_b":null}}}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_a 1 John Doe
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"]},"group_b":null}}}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_a 2 Jane Smith
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":null}}}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_b 3 Emily Jones
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Send command FIND_DATA data_pool student_scheme group_b 3
+20.09.2024 18:57:27 TRACE [http://127.0.0.1:8085] Received from storage server: ["Emily","Jones"]
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
+20.09.2024 18:57:27 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}

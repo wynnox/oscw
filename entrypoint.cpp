@@ -378,22 +378,22 @@ std::string EntryPointServer::send_request_to_storage(const std::string& json_co
     return response_data;
 }
 
-void EntryPointServer::monitor_servers()
-{
-    while (true)
-    {
-        for (const auto& server_url : storage_servers)
-        {
-            if (!is_server_alive(server_url))
-            {
-                _logger->error("[" + server_url + "] " + "Сервер не отвечает. Перезапуск");
-                restart_storage_server(server_url);
-            }
-        }
-
-        std::this_thread::sleep_for(std::chrono::seconds(5));
-    }
-}
+// void EntryPointServer::monitor_servers()
+// {
+//     while (true)
+//     {
+//         for (const auto& server_url : storage_servers)
+//         {
+//             if (!is_server_alive(server_url))
+//             {
+//                 _logger->error("[" + server_url + "] " + "Сервер не отвечает. Перезапуск");
+//                 restart_storage_server(server_url);
+//             }
+//         }
+//
+//         std::this_thread::sleep_for(std::chrono::seconds(5));
+//     }
+// }
 
 // TODO
 std::string EntryPointServer::export_data_to_json(const std::string& server_url)
@@ -447,28 +447,28 @@ std::string EntryPointServer::export_data_to_json(const std::string& server_url)
 //
 // }
 
-bool EntryPointServer::is_server_alive(const std::string& server_url)
-{
-    CURL* curl = curl_easy_init();
-    int response_code = 0;
-    std::string command = server_url + "/heartbeat";
-
-    if(curl)
-    {
-        curl_easy_setopt(curl, CURLOPT_URL, command.c_str());
-        curl_easy_setopt(curl, CURLOPT_NOBODY, 1);
-
-        CURLcode res = curl_easy_perform(curl);
-        if (res == CURLE_OK)
-        {
-            curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
-        }
-
-        curl_easy_cleanup(curl);
-    }
-
-    return response_code == 200;
-}
+// bool EntryPointServer::is_server_alive(const std::string& server_url)
+// {
+//     CURL* curl = curl_easy_init();
+//     int response_code = 0;
+//     std::string command = server_url + "/heartbeat";
+//
+//     if(curl)
+//     {
+//         curl_easy_setopt(curl, CURLOPT_URL, command.c_str());
+//         curl_easy_setopt(curl, CURLOPT_NOBODY, 1);
+//
+//         CURLcode res = curl_easy_perform(curl);
+//         if (res == CURLE_OK)
+//         {
+//             curl_easy_getinfo(curl, CURLINFO_RESPONSE_CODE, &response_code);
+//         }
+//
+//         curl_easy_cleanup(curl);
+//     }
+//
+//     return response_code == 200;
+// }
 
 void EntryPointServer::start_storage_server(int port)
 {
@@ -504,6 +504,7 @@ crow::response EntryPointServer::add_storage_server(int port)
 
     if (port == 8080)
     {
+        _logger->trace("This port cannot be used " + port);
         return crow::response(404, "This port cannot be used");
     }
 
@@ -512,6 +513,7 @@ crow::response EntryPointServer::add_storage_server(int port)
     auto it_remove = std::find(storage_servers.begin(), storage_servers.end(), server_url);
     if (it_remove != storage_servers.end())
     {
+        _logger->error("[" + server_url + "] " + "The server is already in use");
         return crow::response(404, "The server is already in use");
     }
 
@@ -543,6 +545,7 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
     auto it_remove = std::find(storage_servers.begin(), storage_servers.end(), server_to_remove);
     if (it_remove == storage_servers.end())
     {
+        _logger->error("[" + server_to_remove + "] " + "Server not found");
         return crow::response(404, "Server not found");
     }
 
@@ -552,6 +555,7 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
     it_remove = std::find(storage_servers.begin(), storage_servers.end(), least_loaded_server);
     if (it_remove == storage_servers.end())
     {
+        _logger->error("[" + least_loaded_server + "] " + "Server not found");
         return crow::response(404, "Server not found");
     }
 
@@ -572,6 +576,7 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
 
     if (result != "Data imported successfully")
     {
+
         return crow::response(500, "Error importing data to the least loaded server");
     }
 
@@ -600,6 +605,8 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
     }
 
     // print_all_data_from_servers();
+
+    _logger->error("[" + least_loaded_server + "] " + "Removing server is done");
 
     return crow::response(201, "Removing server is done");
 }
