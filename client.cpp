@@ -88,11 +88,23 @@ void send_request(const std::string& command, const std::string& server_url)
     {
         std::string full_url;
 
-        //TODO
         if (command.find("REMOVE_STORAGE") == 0)
         {
             size_t first_space = command.find(" ");
+
+            if (first_space == std::string::npos)
+            {
+                std::cerr << "Error: Invalid arguments for REMOVE_STORAGE. Two ports are required." << std::endl;
+                return;
+            }
+
             size_t second_space = command.find(" ", first_space + 1);
+
+            if (second_space == std::string::npos)
+            {
+                std::cerr << "Error: Invalid arguments for REMOVE_STORAGE. Two ports are required." << std::endl;
+                return;
+            }
 
             std::string port1 = command.substr(first_space + 1, second_space - first_space - 1);
             std::string port2 = command.substr(second_space + 1);
@@ -108,6 +120,13 @@ void send_request(const std::string& command, const std::string& server_url)
         else if (command.find("ADD_STORAGE") == 0)
         {
             size_t space = command.find(" ");
+
+            if (space == std::string::npos)
+            {
+                std::cerr << "Error: Invalid arguments for ADD_STORAGE. Port is required." << std::endl;
+                return;
+            }
+
             std::string port = command.substr(space + 1);
 
             if(port.empty())

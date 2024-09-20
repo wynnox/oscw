@@ -6,3 +6,6 @@ ADD_COLLECTION data_pool student_scheme group_a
 ADD_COLLECTION data_pool student_scheme group_b
 ADD_DATA data_pool student_scheme group_a 1 John Doe
 FIND_DATA data_pool student_scheme group_a 1
+REMOVE_STORAGE
+REMOVE_STORAGE 8083
+REMOVE_STORAGE 8083 8085
