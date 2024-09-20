@@ -1,4 +1,8 @@
 ADD_STORAGE 8083
 ADD_POOL data_pool
-ADD_POOL iloveyou
-ADD_POOL opo
+ADD_POOL lol
+ADD_SCHEME data_pool student_scheme
+ADD_COLLECTION data_pool student_scheme group_a
+ADD_COLLECTION data_pool student_scheme group_b
+ADD_DATA data_pool student_scheme group_a 1 John Doe
+FIND_DATA data_pool student_scheme group_a 1

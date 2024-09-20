@@ -13,6 +13,19 @@ public:
 
     virtual ~collection() {}
 
+    collection(const collection& other) : container(other) {}
+
+    collection& operator=(const collection& other)
+    {
+        if (this != &other) {
+            container::operator=(other);
+        }
+        return *this;
+    }
+
+    collection(collection&& other) noexcept : container(std::move(other)) {}
+
+
     void add_data(const std::string& key, const data& value)
     {
         add_item(key, value);

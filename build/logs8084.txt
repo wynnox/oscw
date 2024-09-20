@@ -1,0 +1,10 @@
+20.09.2024 09:21:37 TRACE CREATE B_TREE DATABASE
+20.09.2024 09:21:47 TRACE Attempting to insert pool with key: data
+20.09.2024 09:21:47 TRACE Pool added successfully with key: data
+20.09.2024 09:21:47 TRACE Attempting to insert pool with key: eeeeeedata
+20.09.2024 09:21:47 TRACE Pool added successfully with key: eeeeeedata
+20.09.2024 09:21:47 TRACE FIND DATA: data/a/a/1
+20.09.2024 09:21:47 TRACE FIND DATA: eeeeeedata/c/c/3
+20.09.2024 09:21:52 TRACE FIND DATA: data/a/a/1
+20.09.2024 09:21:52 TRACE FIND DATA: eeeeeedata/c/c/3
+20.09.2024 09:21:52 TRACE DELETE B_TREE DATABASE

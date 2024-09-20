@@ -13,6 +13,18 @@ public:
 
     virtual ~scheme() {}
 
+    scheme(const scheme& other) : container(other) {}
+
+    scheme& operator=(const scheme& other)
+    {
+        if (this != &other) {
+            container::operator=(other);
+        }
+        return *this;
+    }
+
+    scheme(scheme&& other) noexcept : container(std::move(other)) {}
+
     void add_collection(const std::string& collection_name, const collection& coll)
     {
         add_item(collection_name, coll);

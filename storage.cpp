@@ -227,13 +227,15 @@ private:
     {
         std::lock_guard<std::mutex> lock(store_mutex);
 
-        // if (_db->get_server_type() == database::server_type::in_memory_cache && _db->pool_exists(pool))
-        // {
-        //     return crow::response(400, "Pool already exists on this storage server: " + pool);
-        // }
-
         add_pool cmd(_db, pool);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_pool++;
 
         return crow::response(201, "Pool added successfully on storage server");
@@ -244,7 +246,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         rm_pool cmd(_db, pool);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_pool--;
 
         return crow::response(204, "Pool removed successfully on storage server");
@@ -274,7 +283,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         rm_scheme cmd(_db, pool, scheme);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_scheme--;
 
         return crow::response(204, "Scheme removed successfully on storage server");
@@ -287,7 +303,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         add_collection cmd(_db, pool, scheme, collection);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_collection++;
 
         return crow::response(201, "Collection added successfully on storage server");
@@ -299,7 +322,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         rm_collection cmd(_db, pool, scheme, collection);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_collection--;
 
         return crow::response(204, "Collection removed successfully on storage server");
@@ -315,7 +345,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         add_data_command cmd(_db, pool, scheme, collection, id, data(j));
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_data++;
 
         return crow::response(201, "Data added successfully on storage server");
@@ -328,7 +365,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         rm_data cmd(_db, pool, scheme, collection, id);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_data--;
 
         return crow::response(204, "Data removed successfully on storage server");
@@ -341,7 +385,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         update_data cmd(_db, pool, scheme, collection, id, data(j));
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
 
         return crow::response(204, "Data updated successfully on storage server");
     }
@@ -352,7 +403,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         find_data_command cmd(_db, pool, scheme, collection, id);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
 
         data result = cmd.get_result();
 
@@ -372,7 +430,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         find_data_in_range cmd(_db, pool, scheme, collection, lower, upper);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
 
         std::vector<data> result = cmd.get_result();
 
@@ -406,7 +471,6 @@ private:
             {
                 std::string pool_name = pool_item.key();
                 auto pool_value = pool_item.value();
-                std::cout << "Processing pool: " << pool_name << std::endl;
 
                 if (!pool_value.is_object())
                 {

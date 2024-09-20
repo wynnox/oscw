@@ -13,34 +13,46 @@ size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::string* s)
     return new_length;
 }
 
-std::string construct_url(const std::string& command, const std::string& server_url)
-{
-    std::string full_url;
-
-    if (command.find("REMOVE_STORAGE") == 0)
-    {
-        size_t first_space = command.find(" ");
-        size_t second_space = command.find(" ", first_space + 1);
-
-        std::string port1 = command.substr(first_space + 1, second_space - first_space - 1);
-        std::string port2 = command.substr(second_space + 1);
-
-        full_url = server_url + "/remove_storage/" + port1 + "/" + port2;
-    }
-    else if (command.find("ADD_STORAGE") == 0)
-    {
-        size_t space = command.find(" ");
-        std::string port = command.substr(space + 1);
-
-        full_url = server_url + "/add_storage/" + port;
-    }
-    else
-    {
-        full_url = server_url + "/command";
-    }
-
-    return full_url;
-}
+// std::string construct_url(const std::string& command, const std::string& server_url)
+// {
+//     std::string full_url;
+//
+//     if (command.find("REMOVE_STORAGE") == 0)
+//     {
+//         size_t first_space = command.find(" ");
+//         size_t second_space = command.find(" ", first_space + 1);
+//
+//         std::string port1 = command.substr(first_space + 1, second_space - first_space - 1);
+//         std::string port2 = command.substr(second_space + 1);
+//
+//         if (port1.empty() || port2.empty())
+//         {
+//             std::cerr << "Error: Invalid arguments for REMOVE_STORAGE. Ports cannot be empty." << std::endl;
+//             return "lol";
+//         }
+//
+//         full_url = server_url + "/remove_storage/" + port1 + "/" + port2;
+//     }
+//     else if (command.find("ADD_STORAGE") == 0)
+//     {
+//         size_t space = command.find(" ");
+//         std::string port = command.substr(space + 1);
+//
+//         if(port.empty())
+//         {
+//             std::cerr << "Error: Invalid arguments for REMOVE_STORAGE. Ports cannot be empty." << std::endl;
+//             return "lol";
+//         }
+//
+//         full_url = server_url + "/add_storage/" + port;
+//     }
+//     else
+//     {
+//         full_url = server_url + "/command";
+//     }
+//
+//     return full_url;
+// }
 
 void handle_response(CURL* curl, const std::string& response_string)
 {
@@ -74,7 +86,42 @@ void send_request(const std::string& command, const std::string& server_url)
 
     if (curl)
     {
-        std::string full_url = construct_url(command, server_url);
+        std::string full_url;
+
+        //TODO
+        if (command.find("REMOVE_STORAGE") == 0)
+        {
+            size_t first_space = command.find(" ");
+            size_t second_space = command.find(" ", first_space + 1);
+
+            std::string port1 = command.substr(first_space + 1, second_space - first_space - 1);
+            std::string port2 = command.substr(second_space + 1);
+
+            if (port1.empty() || port2.empty())
+            {
+                std::cerr << "Error: Invalid arguments for REMOVE_STORAGE. Ports cannot be empty." << std::endl;
+                return;
+            }
+
+            full_url = server_url + "/remove_storage/" + port1 + "/" + port2;
+        }
+        else if (command.find("ADD_STORAGE") == 0)
+        {
+            size_t space = command.find(" ");
+            std::string port = command.substr(space + 1);
+
+            if(port.empty())
+            {
+                std::cerr << "Error: Invalid arguments for REMOVE_STORAGE. Ports cannot be empty." << std::endl;
+                return;
+            }
+
+            full_url = server_url + "/add_storage/" + port;
+        }
+        else
+        {
+            full_url = server_url + "/command";
+        }
 
         curl_easy_setopt(curl, CURLOPT_URL, full_url.c_str());
         curl_easy_setopt(curl, CURLOPT_POSTFIELDS, command.c_str());

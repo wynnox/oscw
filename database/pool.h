@@ -13,10 +13,23 @@ public:
 
     virtual ~pool() {}
 
+    pool(const pool& other) : container(other) {}
+
+    pool& operator=(const pool& other)
+    {
+        if (this != &other) {
+            container::operator=(other);
+        }
+        return *this;
+    }
+
+    pool(pool&& other) noexcept : container(std::move(other)) {}
+
     void add_scheme(const std::string& scheme_name, const scheme& sch)
     {
         add_item(scheme_name, sch);
     }
+
 
     const scheme& get_scheme(const std::string& scheme_name) const
     {

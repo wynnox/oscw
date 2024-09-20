@@ -8,10 +8,10 @@
 #include <iostream>
 #include "container.h"
 
-class b_tree_database: public database, public container<std::string, pool>
+class b_tree_database: public database //, public container<std::string, pool>
 {
 private:
-    // container<std::string, pool>* _database;
+    container<std::string, pool>* _database;
     size_t _t;
     server_type _server_type;
 
@@ -19,16 +19,43 @@ private:
 
 public:
     explicit b_tree_database(size_t t, logger* logger)
-        : container(t), _logger(logger), _server_type(server_type::in_memory_cache)
+        : _t(t), _logger(logger), _server_type(server_type::in_memory_cache)
     {
-        // _database = new container<std::string, pool>(_t);
+        _database = new container<std::string, pool>(t);
         _logger->trace("CREATE B_TREE DATABASE");
     }
 
     ~b_tree_database() override
     {
         _logger->trace("DELETE B_TREE DATABASE");
-        // delete _database;
+        delete _database;
+    }
+
+    b_tree_database(const b_tree_database& other)
+    : _t(other._t), _server_type(other._server_type), _logger(other._logger)
+    {
+        _database = new container<std::string, pool>(*other._database);
+    }
+
+    b_tree_database& operator=(const b_tree_database& other)
+    {
+        if (this == &other) return *this;
+
+        _t = other._t;
+        _server_type = other._server_type;
+        _logger = other._logger;
+
+        delete _database;
+        _database = new container<std::string, pool>(*other._database);
+
+        return *this;
+    }
+
+    b_tree_database(b_tree_database&& other) noexcept
+        : _database(other._database), _t(other._t), _server_type(other._server_type), _logger(other._logger)
+    {
+        other._database = nullptr;
+        other._logger = nullptr;
     }
 
     server_type get_server_type() const override
@@ -36,34 +63,6 @@ public:
         return _server_type;
     }
 
-    b_tree_database(const b_tree_database& other) :  container(other), _logger(other._logger), _server_type(other._server_type) {}
-
-
-    b_tree_database& operator=(const b_tree_database& other)
-    {
-        if (this == &other) return *this;
-
-        container::operator=(other);
-        _logger = other._logger;
-        _server_type = other._server_type;
-        return *this;
-    }
-
-    b_tree_database(b_tree_database&& other) noexcept : container(std::move(other)), _logger(other._logger), _server_type(other._server_type)
-    {
-        other._logger = nullptr;
-    }
-
-    b_tree_database& operator=(b_tree_database&& other) noexcept
-    {
-        if (this == &other) return *this;
-
-        container::operator=(std::move(other));
-        _logger = other._logger;
-        _server_type = other._server_type;
-        other._logger = nullptr;
-        return *this;
-    }
 
 public:
 
@@ -72,8 +71,7 @@ public:
         try
         {
             _logger->trace("Attempting to insert pool with key: " + pool_name);
-            // _database->insert(pool_name, pool(_t), insertion_strategy::throw_an_exception);
-            add_item(pool_name, pool(_t));
+            _database->add_item(pool_name, pool(_t));
             _logger->trace("Pool added successfully with key: " + pool_name);
         }
         catch (const std::exception &e)
@@ -87,8 +85,7 @@ public:
         try
         {
             _logger->trace("REMOVE POOL: " + pool_name);
-            // _database->dispose(pool_name);
-            remove_item(pool_name);
+            _database->remove_item(pool_name);
         }
         catch(const std::exception &e)
         {
@@ -98,8 +95,7 @@ public:
 
     [[nodiscard]] pool& find_pool(const std::string& pool_name) const
     {
-        // return const_cast<pool&>(_database->obtain(pool_name));
-        return const_cast<pool&>(get_item(pool_name));
+        return const_cast<pool&>(_database->get_item(pool_name));
     }
 
 public:
@@ -108,7 +104,8 @@ public:
     {
         try
         {
-            find_pool(pool_name).add_scheme(scheme_name, scheme(_t));
+            _logger->trace("lol");
+            find_pool(pool_name).add_item(scheme_name, scheme(_t));
             _logger->trace("ADD SCHEME: " + pool_name + "/" + scheme_name);
         }
         catch(const std::exception &e)
@@ -263,7 +260,7 @@ public:
     {
         nlohmann::json json_tree;
 
-        for (auto it = begin_infix(); it != end_infix(); ++it)
+        for (auto it = _database->begin_infix(); it != _database->end_infix(); ++it)
         {
             auto [level, index, pool_name, pool_value] = *it;
 
