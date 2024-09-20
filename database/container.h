@@ -10,11 +10,11 @@
 template <typename Key, typename Value>
 class container
 {
-private:
+public:
     b_tree<Key, Value>* _container;
     size_t _t;
 
-protected:
+public:
     explicit container(size_t t) : _t(t), _container(new b_tree<Key, Value>(t, comparison::stdstring_comparer())) {}
 
     ~container()
@@ -52,6 +52,7 @@ protected:
         return *this;
     }
 
+public:
     void add_item(const Key& key, const Value& value)
     {
         _container->insert(key, value, insertion_strategy::throw_an_exception);

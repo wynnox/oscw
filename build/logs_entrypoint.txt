@@ -1,10 +1,10 @@
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Storage server added on port
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Send command ADD_POOL data_pool
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Received from storage server: Pool added successfully on storage server
-20.09.2024 06:05:13 INFORMATION [http://127.0.0.1:8083] Data: {"data_pool":null}
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Send command ADD_POOL iloveyou
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Received from storage server: Pool already exists on this storage server: iloveyou
-20.09.2024 06:05:13 INFORMATION [http://127.0.0.1:8083] Data: {"data_pool":null}
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Send command ADD_POOL opo
-20.09.2024 06:05:13 TRACE [http://127.0.0.1:8083] Received from storage server: Pool already exists on this storage server: opo
-20.09.2024 06:05:13 INFORMATION [http://127.0.0.1:8083] Data: {"data_pool":null}
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Storage server added on port
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Send command ADD_POOL data_pool
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Received from storage server: Pool added successfully on storage server
+20.09.2024 07:59:36 INFORMATION [http://127.0.0.1:8083] Data: {"data_pool":null}
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Send command ADD_POOL iloveyou
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Received from storage server: Pool added successfully on storage server
+20.09.2024 07:59:36 INFORMATION [http://127.0.0.1:8083] Data: {"data_pool":null,"iloveyou":null}
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Send command ADD_POOL opo
+20.09.2024 07:59:36 TRACE [http://127.0.0.1:8083] Received from storage server: Pool added successfully on storage server
+20.09.2024 07:59:36 INFORMATION [http://127.0.0.1:8083] Data: {"data_pool":null,"iloveyou":null,"opo":null}

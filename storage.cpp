@@ -227,10 +227,10 @@ private:
     {
         std::lock_guard<std::mutex> lock(store_mutex);
 
-        if (_db->get_server_type() == database::server_type::in_memory_cache && _db->pool_exists(pool))
-        {
-            return crow::response(400, "Pool already exists on this storage server: " + pool);
-        }
+        // if (_db->get_server_type() == database::server_type::in_memory_cache && _db->pool_exists(pool))
+        // {
+        //     return crow::response(400, "Pool already exists on this storage server: " + pool);
+        // }
 
         add_pool cmd(_db, pool);
         cmd.execute();
@@ -256,7 +256,14 @@ private:
         std::lock_guard<std::mutex> lock(store_mutex);
 
         add_scheme cmd(_db, pool, scheme);
-        cmd.execute();
+        try
+        {
+            cmd.execute();
+        }
+        catch (const std::exception& e)
+        {
+            crow::response(400, e.what());
+        }
         load_scheme++;
 
         return crow::response(201, "Scheme added successfully on storage server");

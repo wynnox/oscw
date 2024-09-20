@@ -1,4 +1,8 @@
-20.09.2024 06:05:08 TRACE CREATE B_TREE DATABASE
-20.09.2024 06:05:13 TRACE Attempting to insert pool with key: data_pool
-20.09.2024 06:05:13 TRACE Pool added successfully with key: data_pool
-20.09.2024 06:05:40 TRACE DELETE B_TREE DATABASE
+20.09.2024 07:59:31 TRACE CREATE B_TREE DATABASE
+20.09.2024 07:59:36 TRACE Attempting to insert pool with key: data_pool
+20.09.2024 07:59:36 TRACE Pool added successfully with key: data_pool
+20.09.2024 07:59:36 TRACE Attempting to insert pool with key: iloveyou
+20.09.2024 07:59:36 TRACE Pool added successfully with key: iloveyou
+20.09.2024 07:59:36 TRACE Attempting to insert pool with key: opo
+20.09.2024 07:59:36 TRACE Pool added successfully with key: opo
+20.09.2024 07:59:50 TRACE DELETE B_TREE DATABASE

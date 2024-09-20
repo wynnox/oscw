@@ -6,11 +6,12 @@
 #include "database.h"
 #include <string>
 #include <iostream>
+#include "container.h"
 
-class b_tree_database: public database
+class b_tree_database: public database, public container<std::string, pool>
 {
 private:
-    b_tree<std::string, pool>* _database;
+    // container<std::string, pool>* _database;
     size_t _t;
     server_type _server_type;
 
@@ -18,16 +19,16 @@ private:
 
 public:
     explicit b_tree_database(size_t t, logger* logger)
-        : _t(t), _logger(logger), _server_type(server_type::in_memory_cache)
+        : container(t), _logger(logger), _server_type(server_type::in_memory_cache)
     {
-        _database = new b_tree<std::string, pool>(_t);
+        // _database = new container<std::string, pool>(_t);
         _logger->trace("CREATE B_TREE DATABASE");
     }
 
     ~b_tree_database() override
     {
         _logger->trace("DELETE B_TREE DATABASE");
-        delete _database;
+        // delete _database;
     }
 
     server_type get_server_type() const override
@@ -35,36 +36,32 @@ public:
         return _server_type;
     }
 
-    b_tree_database(const b_tree_database& other) : _t(other._t)
-    {
-        _database = new b_tree<std::string, pool>(*other._database);
-    }
+    b_tree_database(const b_tree_database& other) :  container(other), _logger(other._logger), _server_type(other._server_type) {}
+
 
     b_tree_database& operator=(const b_tree_database& other)
     {
         if (this == &other) return *this;
 
-        delete _database;
-
-        _t = other._t;
-        _database = new b_tree<std::string, pool>(*other._database);
+        container::operator=(other);
+        _logger = other._logger;
+        _server_type = other._server_type;
         return *this;
     }
 
-    b_tree_database(b_tree_database&& other) noexcept : _database(other._database), _t(other._t)
+    b_tree_database(b_tree_database&& other) noexcept : container(std::move(other)), _logger(other._logger), _server_type(other._server_type)
     {
-        other._database = nullptr;
+        other._logger = nullptr;
     }
 
     b_tree_database& operator=(b_tree_database&& other) noexcept
     {
         if (this == &other) return *this;
 
-        delete _database;
-
-        _database = other._database;
-        _t = other._t;
-        other._database = nullptr;
+        container::operator=(std::move(other));
+        _logger = other._logger;
+        _server_type = other._server_type;
+        other._logger = nullptr;
         return *this;
     }
 
@@ -75,7 +72,8 @@ public:
         try
         {
             _logger->trace("Attempting to insert pool with key: " + pool_name);
-            _database->insert(pool_name, pool(_t), insertion_strategy::throw_an_exception);
+            // _database->insert(pool_name, pool(_t), insertion_strategy::throw_an_exception);
+            add_item(pool_name, pool(_t));
             _logger->trace("Pool added successfully with key: " + pool_name);
         }
         catch (const std::exception &e)
@@ -89,7 +87,8 @@ public:
         try
         {
             _logger->trace("REMOVE POOL: " + pool_name);
-            _database->dispose(pool_name);
+            // _database->dispose(pool_name);
+            remove_item(pool_name);
         }
         catch(const std::exception &e)
         {
@@ -99,7 +98,8 @@ public:
 
     [[nodiscard]] pool& find_pool(const std::string& pool_name) const
     {
-        return const_cast<pool&>(_database->obtain(pool_name));
+        // return const_cast<pool&>(_database->obtain(pool_name));
+        return const_cast<pool&>(get_item(pool_name));
     }
 
 public:
@@ -263,12 +263,8 @@ public:
     {
         nlohmann::json json_tree;
 
-        if (!_database) {
-            std::cout << "Database is not initialized." << std::endl;
-            return json_tree;
-        }
-
-        for (auto it = _database->begin_infix(); it != _database->end_infix(); ++it) {
+        for (auto it = begin_infix(); it != end_infix(); ++it)
+        {
             auto [level, index, pool_name, pool_value] = *it;
 
             const container<std::string, scheme>& pool_container = pool_value;
@@ -316,7 +312,7 @@ public:
     {
         try
         {
-            _database->obtain(pool_name);
+            // _database->obtain(pool_name);
             return true;
         }
         catch (const std::exception& e)
