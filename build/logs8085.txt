@@ -1,11 +1,8 @@
-20.09.2024 18:57:22 TRACE CREATE B_TREE DATABASE
-20.09.2024 18:57:27 TRACE Attempting to insert pool with key: data_pool
-20.09.2024 18:57:27 TRACE Pool added successfully with key: data_pool
-20.09.2024 18:57:27 TRACE lol
-20.09.2024 18:57:27 TRACE ADD SCHEME: data_pool/student_scheme
-20.09.2024 18:57:27 TRACE ADD COLLECTION: data_pool/student_scheme/group_a
-20.09.2024 18:57:27 TRACE ADD COLLECTION: data_pool/student_scheme/group_b
-20.09.2024 18:57:27 TRACE ADD DATA: data_pool/student_scheme/group_a/1
-20.09.2024 18:57:27 TRACE ADD DATA: data_pool/student_scheme/group_a/2
-20.09.2024 18:57:27 TRACE ADD DATA: data_pool/student_scheme/group_b/3
-20.09.2024 18:57:27 TRACE FIND DATA: data_pool/student_scheme/group_b/3
+21.09.2024 15:21:01 TRACE CREATE B_TREE DATABASE
+21.09.2024 15:21:06 TRACE Attempting to insert pool with key: lol
+21.09.2024 15:21:06 TRACE Pool added successfully with key: lol
+21.09.2024 15:21:11 TRACE Attempting to insert pool with key: data_pool
+21.09.2024 15:21:11 TRACE Pool added successfully with key: data_pool
+21.09.2024 15:21:11 TRACE ADD SCHEME: data_pool/student_scheme
+21.09.2024 15:21:11 TRACE ADD COLLECTION: data_pool/student_scheme/group_a
+21.09.2024 15:21:11 TRACE ADD DATA: data_pool/student_scheme/group_a/1

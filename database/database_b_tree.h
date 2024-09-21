@@ -104,7 +104,7 @@ public:
     {
         try
         {
-            _logger->trace("lol");
+            // _logger->trace("lol");
             find_pool(pool_name).add_item(scheme_name, scheme(_t));
             _logger->trace("ADD SCHEME: " + pool_name + "/" + scheme_name);
         }

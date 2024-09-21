@@ -574,11 +574,6 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
     std::string add_data_url = least_loaded_server + "/import_data";
     std::string result = send_request_to_storage(all_data_json, add_data_url, "POST");
 
-    if (result != "Data imported successfully")
-    {
-
-        return crow::response(500, "Error importing data to the least loaded server");
-    }
 
     _logger->trace("[" + least_loaded_server + "] " + "Result of importing data to the least loaded server: " + result);
 

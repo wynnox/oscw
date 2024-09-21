@@ -34,7 +34,7 @@ void handle_response(CURL* curl, const std::string& response_string)
         case 404:
             break;
         default:
-            std::cerr << "Failed with HTTP code: " << response_code << std::endl;
+            std::cerr << "Failed with HTTP code: " << response_code << " " << response_string << std::endl;
         break;
     }
 }
