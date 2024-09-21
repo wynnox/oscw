@@ -504,7 +504,7 @@ crow::response EntryPointServer::add_storage_server(int port)
 
     if (port == 8080)
     {
-        _logger->trace("This port cannot be used " + port);
+        _logger->trace("This port cannot be used");
         return crow::response(404, "This port cannot be used");
     }
 

@@ -15,9 +15,6 @@ ADD_STORAGE
 ADD_DATA data_pool student_scheme group_b 4 Michael Brown
 UPDATE_DATA data_pool student_scheme group_b 3 Emily JJJ
 FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-ADD_STORAGE
-ADD_STORAGE
-ADD_STORAGE
 ADD_POOL data
 ADD_POOL notdata
 ADD_POOL eeeeeedata
