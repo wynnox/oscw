@@ -461,11 +461,11 @@ private:
             auto json_data = nlohmann::json::parse(raw_json_data);
             std::cout << "Parsed JSON: " << json_data.dump(4) << std::endl;
 
-            if (!json_data.is_object())
-            {
-                std::cerr << "Error: JSON is not an object" << std::endl;
-                return crow::response(400, "Invalid JSON structure for pools");
-            }
+            // if (!json_data.is_object())
+            // {
+            //     std::cerr << "Error: JSON is not an object" << std::endl;
+            //     return crow::response(400, "Invalid JSON structure for pools");
+            // }
 
             int load_pool = 0;
 
@@ -474,11 +474,11 @@ private:
                 std::string pool_name = pool_item.key();
                 auto pool_value = pool_item.value();
 
-                if (!pool_value.is_object())
-                {
-                    std::cerr << "Error: Pool is not an object" << std::endl;
-                    return crow::response(400, "Invalid JSON structure for pool " + pool_name);
-                }
+                // if (!pool_value.is_object())
+                // {
+                //     std::cerr << "Error: Pool is not an object" << std::endl;
+                //     return crow::response(400, "Invalid JSON structure for pool " + pool_name);
+                // }
 
                 add_pool cmd(_db, pool_name);
                 cmd.execute();
@@ -490,11 +490,11 @@ private:
                     auto scheme_value = scheme_item.value();
                     std::cout << "Processing scheme: " << scheme_name << " in pool: " << pool_name << std::endl;
 
-                    if (!scheme_value.is_object())
-                    {
-                        std::cerr << "Error: Scheme is not an object" << std::endl;
-                        return crow::response(400, "Invalid JSON structure: Expected a JSON object for scheme " + scheme_name);
-                    }
+                    // if (!scheme_value.is_object())
+                    // {
+                    //     std::cerr << "Error: Scheme is not an object" << std::endl;
+                    //     return crow::response(400, "Invalid JSON structure: Expected a JSON object for scheme " + scheme_name);
+                    // }
 
                     add_scheme cmd1(_db, pool_name, scheme_name);
                     cmd1.execute();
@@ -505,11 +505,11 @@ private:
                         auto collection_value = collection_item.value();
                         std::cout << "Processing collection: " << collection_name << " in scheme: " << scheme_name << std::endl;
 
-                        if (!collection_value.is_object())
-                        {
-                            std::cerr << "Error: Collection is not an object" << std::endl;
-                            return crow::response(400, "Invalid JSON structure: Expected a JSON object for collection " + collection_name);
-                        }
+                        // if (!collection_value.is_object())
+                        // {
+                        //     std::cerr << "Error: Collection is not an object" << std::endl;
+                        //     return crow::response(400, "Invalid JSON structure: Expected a JSON object for collection " + collection_name);
+                        // }
 
                         add_collection cmd2(_db, pool_name, scheme_name, collection_name);
                         cmd2.execute();

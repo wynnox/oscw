@@ -1,18 +1,6 @@
-ADD_STORAGE
-ADD_STORAGE 8080
 ADD_STORAGE 8085
-ADD_STORAGE 8085
-ADD_POOL data_pool
-ADD_SCHEME data_pool student_scheme
-ADD_COLLECTION data_pool student_scheme group_a
-ADD_COLLECTION data_pool student_scheme group_b
-ADD_DATA data_pool student_scheme group_a 1 John Doe
-ADD_DATA data_pool student_scheme group_a 2 Jane Smith
-ADD_DATA data_pool student_scheme group_b 3 Emily Jones
-FIND_DATA data_pool student_scheme group_b 3
-FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-ADD_DATA data_pool student_scheme group_b 4 Michael Brown
-FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-REMOVE_STORAGE 8085 8085
-REMOVE_STORAGE 8085 8090
+ADD_POOL popa
+ADD_STORAGE 8082
+ADD_POOL popa
+REMOVE_STORAGE 8085 8082
+ADD_SCHEME popa s

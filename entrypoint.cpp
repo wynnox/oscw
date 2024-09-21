@@ -530,6 +530,11 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
 {
     std::lock_guard<std::mutex> lock(servers_mutex);
 
+    if(port1 == port2)
+    {
+        return crow::response(404, "The server for deleting and moving data is the same");
+    }
+
     if (storage_servers.size() <= 1)
     {
         return crow::response(400, "Cannot remove the last remaining server");
@@ -549,15 +554,15 @@ crow::response EntryPointServer::remove_storage_server(int port1, int port2)
         return crow::response(404, "Server not found");
     }
 
-    storage_servers.erase(it_remove);
-
     std::string least_loaded_server = "http://127.0.0.1:" + std::to_string(port2);
-    it_remove = std::find(storage_servers.begin(), storage_servers.end(), least_loaded_server);
-    if (it_remove == storage_servers.end())
+    auto it_dest = std::find(storage_servers.begin(), storage_servers.end(), least_loaded_server);
+    if (it_dest == storage_servers.end())
     {
         _logger->error("[" + least_loaded_server + "] " + "Server not found");
         return crow::response(404, "Server not found");
     }
+
+    storage_servers.erase(it_remove);
 
     std::string all_data_url = server_to_remove + "/all_data";
     std::string all_data_json = send_request_to_storage("", all_data_url, "GET");

@@ -1,42 +1,16 @@
-21.09.2024 15:36:04 TRACE This port cannot be used
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Storage server added on port
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: null
-21.09.2024 15:36:09 ERROR [http://127.0.0.1:8085] The server is already in use
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_POOL data_pool
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Pool added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":null}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_SCHEME data_pool student_scheme
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Scheme added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":null}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_COLLECTION data_pool student_scheme group_a
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Collection added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":null}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_COLLECTION data_pool student_scheme group_b
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Collection added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":null,"group_b":null}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_a 1 John Doe
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"]},"group_b":null}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_a 2 Jane Smith
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":null}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_b 3 Emily Jones
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command FIND_DATA data_pool student_scheme group_b 3
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: ["Emily","Jones"]
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: [["Emily","Jones"]]
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: [["Emily","Jones"]]
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"]}}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command ADD_DATA data_pool student_scheme group_b 4 Michael Brown
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: Data added successfully on storage server
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"],"4":["Michael","Brown"]}}}}
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Send command FIND_DATA_IN_RANGE data_pool student_scheme group_b 3 4
-21.09.2024 15:36:09 TRACE [http://127.0.0.1:8085] Received from storage server: [["Emily","Jones"],["Michael","Brown"]]
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"],"4":["Michael","Brown"]}}}}
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"],"4":["Michael","Brown"]}}}}
-21.09.2024 15:36:09 INFORMATION [http://127.0.0.1:8085] Data: {"data_pool":{"student_scheme":{"group_a":{"1":["John","Doe"],"2":["Jane","Smith"]},"group_b":{"3":["Emily","Jones"],"4":["Michael","Brown"]}}}}
+21.09.2024 16:02:37 TRACE [http://127.0.0.1:8085] Storage server added on port
+21.09.2024 16:02:37 TRACE [http://127.0.0.1:8085] Send command ADD_POOL popa
+21.09.2024 16:02:37 TRACE [http://127.0.0.1:8085] Received from storage server: Pool added successfully on storage server
+21.09.2024 16:02:37 INFORMATION [http://127.0.0.1:8085] Data: {"popa":null}
+21.09.2024 16:02:37 INFORMATION [http://127.0.0.1:8085] Data: {"popa":null}
+21.09.2024 16:02:42 TRACE [http://127.0.0.1:8082] Storage server added on port
+21.09.2024 16:02:42 ERROR Pool already exists: popa
+21.09.2024 16:02:42 INFORMATION [http://127.0.0.1:8085] Data: {"popa":null}
+21.09.2024 16:02:42 INFORMATION [http://127.0.0.1:8082] Data: null
+21.09.2024 16:02:42 INFORMATION [http://127.0.0.1:8085] Data from the server to be removed: {"popa":null}
+21.09.2024 16:02:47 TRACE [http://127.0.0.1:8082] Result of importing data to the least loaded server: Data imported successfully
+21.09.2024 16:02:47 TRACE [http://127.0.0.1:8082] Pool popa moved to server
+21.09.2024 16:02:47 ERROR [http://127.0.0.1:8082] Removing server is done
+21.09.2024 16:02:47 TRACE [http://127.0.0.1:8082] Send command ADD_SCHEME popa s
+21.09.2024 16:02:47 TRACE [http://127.0.0.1:8082] Received from storage server: Scheme added successfully on storage server
+21.09.2024 16:02:47 INFORMATION [http://127.0.0.1:8082] Data: {"popa":{"s":null}}
